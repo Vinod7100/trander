@@ -37,6 +37,30 @@ phonecatApp.config(['$routeProvider',
         templateUrl: 'partials/recover.html',
         controller: 'recoverPageCtrl'
       }).
+	  when('/browse', {
+        templateUrl: 'partials/browse.html',
+        controller: 'browsePageCtrl'
+      }).
+	  when('/message', {
+        templateUrl: 'partials/message.html',
+        controller: 'messagePageCtrl'
+      }).
+	  when('/favourite', {
+        templateUrl: 'partials/favourite.html',
+        controller: 'favouritePageCtrl'
+      }).
+	  when('/tranding', {
+        templateUrl: 'partials/tranding.html',
+        controller: 'trandingPageCtrl'
+      }).
+	   when('/verify', {
+        templateUrl: 'partials/verify.html',
+        controller: 'verifyPageCtrl'
+      }).
+	   when('/basic_info', {
+        templateUrl: 'partials/basic_info.html',
+        controller: 'basicPageCtrl'
+      }).
       otherwise({
         redirectTo: '/login'
       });

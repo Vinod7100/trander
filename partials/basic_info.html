@@ -1,0 +1,70 @@
+<div class="col-xs-12 page" style="background-image:url('img/bg3.jpg'); background-repeat: no-repeat; background-size: cover;">
+	<loading></loading>
+	<div class="page-header">
+		<a href="" ng-click="showPage('/login')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
+		<h3 style="margin:0px; text-align:center"></h3>
+		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
+	</div>
+	<div class="col-xs-12">
+		<div ng-if="userDetails.error == 'true'" class="alert alert-danger">
+			{{userDetails.message}}
+		</div>
+		<div ng-if="userDetails.success == 'true'" class="alert alert-success">
+			{{userDetails.message}}
+		</div>
+		<form class="form p-box" ng-submit="submit()">
+			<div class="form-group">
+				<span><i>N</i></span>
+				<input type="text" class="form-control" name="name" ng-model="name" placeholder="Profile name" />
+			</div>
+			<div class="form-group">
+				<span><i>Cm</i></span>
+				<input type="number" class="form-control" name="height" ng-model="height" placeholder="Height" />
+			</div>
+			<div class="form-group">
+				<span><i>Kg</i></span>
+				<input type="number" class="form-control" name="weight" ng-model="weight" placeholder="Weight" />
+			</div>
+			<div class="form-group">
+				<span><i>A</i></span>
+				<input type="number" class="form-control" name="age" ng-model="age" placeholder="Age" />
+			</div>
+			<div class="form-group">
+				<span><i>E</i></span>
+				<input type="text" class="form-control" name="ethnicity" ng-model="ethnicity" placeholder="Ethnicity" />
+			</div>
+			<div class="form-group">
+				<span><i>T</i></span>
+				<input type="text" class="form-control" name="btype" ng-model="btype" placeholder="Body type" />
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" rows="4" name="about" ng-model="about" placeholder="About yourself..." ></textarea>
+			</div>
+			<div class="form-group">
+				<label class="radio-inline">
+				  Looking For: 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="looking" id="looking" ng-model="looking" value="Male"> Male
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="looking" id="looking" ng-model="looking" value="Female"> Female
+				</label>
+			</div>
+			<div class="form-group">
+				<label class="radio-inline">
+				  Enable GPS: 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="yes" id="yes" ng-model="gps" value="yes"> Yes
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="yes" id="yes" ng-model="gps" value="no"> No
+				</label>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Submit Info"/>
+			</div>
+		</form>
+	</div>
+</div>

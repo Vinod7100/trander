@@ -79,14 +79,15 @@ button.transparent{
 }
 .radio{font-size: 18px;
   color: white;}
-input[type="text"], input[type="email"], input[type="password"], select{
-	background-color:transparent;
+input[type="text"], input[type="email"],  input[type="number"], input[type="password"], select{
+	background-color:rgba(112, 108, 106, 0.99);
 	color:white;
 	padding-left:50px ;
 	height:45px !important;
 	font-size: 18px !important;
+	border:0px;
 }
-textarea.form-control{font-size: 18px !important;}
+textarea.form-control{font-size: 18px !important;background-color:rgba(112, 108, 106, 0.99);color:white;border:0px;}
 .no-padding-input nput[type="text"], .no-padding-input select, .no-padding-input  input[type="email"], .no-padding-input  input[type="number"]{
 padding-left:8px !important;
 	height:45px !important;
@@ -147,7 +148,7 @@ padding-left:8px !important;
 .thumbnail .item-img{
 	width:100%;
 }
-.thumbnail .avatar{
+.avatar{
 	width:50px;
 	margin:0px auto;
 }
@@ -158,16 +159,35 @@ padding-left:8px !important;
 
 .box{
 	background-color: rgb(173, 16, 16);
-  color: white;
-  text-align: center;
-  font-size: 18px;
-  height:120px;padding:10px;
+	color: white;
+	text-align: center;
+	font-size: 18px;
+	height:120px;padding:10px;
 }
-.box:hover{box-shadow: 1px 1px 1px #000;background-color:rgba(255, 255, 255, 0.8) !important; !important; color:rgb(161, 27, 27);}  
-.home i{font-size: 60px !important;}
-.p-box{background: rgba(66, 63, 63, 0.5); padding:10px; color:#fff;  box-shadow: 1px 1px 1px #000;}
-a.new-user{color:white; font-size:15px;}
-a:hover{text-decoration:none;color:#fff;}
-.green-dot{position: absolute;
-  left: 74%;
-  bottom: 7%;}
+.box:hover{
+	box-shadow: 1px 1px 1px #000;
+	background-color:rgba(255, 255, 255, 0.8) !important;
+	color:rgb(161, 27, 27);
+}  
+.home i{
+	font-size: 60px !important;
+}
+.p-box{
+	background: rgba(66, 63, 63, 0.5); 
+	padding:10px; 
+	color:#fff; 
+	box-shadow: 1px 1px 1px #000;
+}
+a.new-user{
+	color:white;
+	font-size:15px;
+}
+a:hover{
+	text-decoration:none;
+	color:#fff;
+}
+.green-dot{
+	position: absolute;
+	right: 26px;
+	bottom: 5%;
+}

@@ -4,7 +4,6 @@
 		<a href="" ng-click="showPage('/login')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
 		<h3 style="margin:0px; text-align:center"></h3>
 	</div>
-	
 	<div class="col-xs-12" style="padding-top:10%;">
 		<div ng-if="userDetails.error == 'true'" class="alert alert-danger">
 			{{userDetails.message}}
@@ -14,11 +13,14 @@
 		</div>
 		<form class="form p-box" ng-submit="submit()">
 			<div class="form-group">
-				<span><i class="fa fa-at"></i></span>
-				<input type="email" class="form-control" name="email" ng-model="email" placeholder="E-mail address" required/>
+				<label>Please check your mail for verification code</label>
 			</div>
 			<div class="form-group">
-				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Recover"/>
+				<span><i class="fa fa-at"></i></span>
+				<input type="text" class="form-control" name="token" ng-model="token" placeholder="Enter your verification code here..."/>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Send"/>
 			</div>
 		</form>
 	</div>

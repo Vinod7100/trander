@@ -1,33 +1,63 @@
 <div class="col-xs-12 page" style="background-image:url('img/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
 	<loading></loading>
 	<div class="page-header">
-		<a href="" ng-click="showPage('/profile')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
+		<a href="" ng-click="showPage('/home')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
 		<h3 style="margin:0px; text-align:center"></h3>
 		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
 	<div class="col-xs-12">
-		<div class="p-box">
-			<p><strong>Name</strong></p>
-			<p>Headline</p>
-			<p>Age</p>
-			<p>Height</p>
-			<p>Weight</p>
-			<p>Body Type</p>
-			<p>Looking For</p>
-			<div>
-			<span class="radio">
-			  <label>
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-				Enable
-			  </label>
-			</span>
-			<span class="radio">
-			  <label>
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-				GPS
-			  </label>
-			</span>
-			</div>
+		<div ng-if="userDetails.error == 'true'" class="alert alert-danger">
+			{{userDetails.message}}
 		</div>
-	</div>	
+		<div ng-if="userDetails.success == 'true'" class="alert alert-success">
+			{{userDetails.message}}
+		</div>
+		<form class="form p-box" ng-submit="submit()">
+			<div class="form-group">
+				<span><i>H</i></span>
+				<input type="number" class="form-control" name="height" ng-model="height" placeholder="Enter your height" />
+			</div>
+			<div class="form-group">
+				<span><i>W</i></span>
+				<input type="number" class="form-control" name="weight" ng-model="weight" placeholder="Enter your weight" />
+			</div>
+			<div class="form-group">
+				<span><i>A</i></span>
+				<input type="number" class="form-control" name="age" ng-model="age" placeholder="Enter your age" />
+			</div>
+			<div class="form-group">
+				<span><i>E</i></span>
+				<input type="text" class="form-control" name="ethicity" ng-model="ethicity" placeholder="Enter eticity" required/>
+			</div>
+			<div class="form-group">
+				<span><i>T</i></span>
+				<input type="text" class="form-control" name="body_type" ng-model="body_type" placeholder="Enter Body type" required/>
+			</div>
+			<div class="form-group">
+				<label class="radio-inline">
+				  Looking For: 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="male" id="male" ng-model="looking_for" value="Male"> Male
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="female" id="female" ng-model="looking_for" value="Female"> Female
+				</label>
+			</div>
+			<div class="form-group">
+				<label class="radio-inline">
+				  Enable GPS: 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="yes" id="yes" ng-model="yes" value="yes"> Yes
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="yes" id="yes" ng-model="no" value="yes"> No
+				</label>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Submit Info"/>
+			</div>
+		</form>
+	</div>
 </div>

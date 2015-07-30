@@ -1,12 +1,17 @@
 <div class="col-xs-12 page" style="background-image:url('img/bg3.jpg'); background-repeat: no-repeat; background-size: cover;">
 	<loading></loading>
 	<div class="page-header">
-		<a href="" ng-click="showPage('/profile')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
+		<a href="" ng-click="showPage('/login')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
 		<h3 style="margin:0px; text-align:center"></h3>
-		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
 	<div class="col-xs-12">
-		<form class="form" ng-submit="submit()">
+		<div ng-if="userDetails.error == 'true'" class="alert alert-danger">
+			{{userDetails.message}}
+		</div>
+		<div ng-if="userDetails.success == 'true'" class="alert alert-success">
+			{{userDetails.message}}
+		</div>
+		<form class="form p-box" ng-submit="submit()">
 			<div class="form-group">
 				<span><i class="fa fa-user"></i></span>
 				<input type="text" class="form-control" name="name" ng-model="name" placeholder="Name" required/>
@@ -21,17 +26,17 @@
 			</div>
 			<div class="form-group">
 				<span><i class="fa fa-key"></i></span>
-				<input type="text" class="form-control" name="password" ng-model="password" placeholder="Password" required/>
+				<input type="password" class="form-control" name="password" ng-model="password" placeholder="Password" required/>
 			</div>
 			<div class="radio">
 			  <label>
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+				<input type="radio" name="male" id="male" ng-model="gender" value="Male" checked>
 				Male
 			  </label>
 			</div>
 			<div class="radio">
 			  <label>
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+				<input type="radio" name="female" id="female" ng-model="gender" value="Female" checked>
 				Female
 			  </label>
 			</div>
@@ -40,22 +45,17 @@
 				Transgender
 				<div class="radio">
 			  <label>
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+				<input type="radio" name="mtf" id="mtf" ng-model="gender" value="MTF" checked>
 				MTF
 			  </label>
 			</div>
 			<div class="radio">
 			  <label>
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+				<input type="radio" name="ftm" id="ftm" ng-model="gender" value="FTM" checked>
 				FTM
 			  </label>
 			</div>
 			  </label>
-			</div>
-			
-			<div class="form-group">
-				<span><i class="fa fa-heart"></i></span>
-				<input type="text" class="form-control" name="couple" ng-model="couple" placeholder="Couple" required/>
 			</div>
 			<div class="form-group">
 				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Sign Up"/>

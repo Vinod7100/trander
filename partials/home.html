@@ -3,7 +3,11 @@
 	<div class="page-header">
 		<h2 style="margin:0px; text-align:center">Trander</h2>
 	</div>
-	<div class="col-xs-12">
+		<div class="col-xs-12">
+			<div class="col-xs-12 center">
+			<img ng-src="img/logo.png">
+		</div>
+		<div class="clearfix" style="height:30px; display:block; clear:both; width:100%"></div>
 		<div class="col-xs-12">
 			<div class="col-xs-4 col-xs-offset-4">
 				<img ng-src="img/bg1.jpg" width="100%">
@@ -22,21 +26,24 @@
 		<i class="fa fa-camera"></i>
 		<div >Photos</div>
 	</div>
-	<div class="col-xs-6 box" style="background-color:rgb(190, 72, 63);">
+	<div class="col-xs-6 box" style="background-color:rgb(190, 72, 63);" ng-click="showPage('/browse')">
 		<i class="fa fa-upload"></i>
 		<div >Browse</div>
 	</div>
-	<div class="col-xs-6 box" style="background-color:rgb(179, 49, 49);">
+	<div class="col-xs-6 box" style="background-color:rgb(179, 49, 49);" ng-click="showPage('/message')">
 		<i class="fa fa-envelope"></i>
 		<div >Message</div>
 		<span class="badge">42</span>
 	</div>
-	<div class="col-xs-6 box" style="background-color:rgb(161, 27, 27);">
+	<div class="col-xs-6 box" style="background-color:rgb(161, 27, 27);" ng-click="showPage('/favourite')">
 		<i class="fa fa-heart"></i>
 		<div >Favourite</div>
 	</div>
-	<div class="col-xs-6 box" style="background-color:rgb(111, 18, 18);">
+	<div class="col-xs-6 box" style="background-color:rgb(111, 18, 18);" ng-click="showPage('/tranding')">
 		<i class="fa fa-thumbs-up"></i>
-		<div >Trending</div>
+		<div >Tranding</div>
+	</div>
+	<div class="col-xs-12 box" style="background-color:rgb(91, 45, 49); height:50px;" ng-click="logout()">
+		<div >Logout</div>
 	</div>
 </div>
