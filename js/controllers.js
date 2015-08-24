@@ -185,6 +185,8 @@ phonecatControllers.controller('basicPageCtrl', ['$scope', '$http', '$location',
 		$location.path(pathurl)
 	}
 	
+	
+	
 	$scope.submit = function(){
 			$scope.loading = true;
 			console.log($scope.name);
@@ -207,6 +209,39 @@ phonecatControllers.controller('profilePageCtrl', ['$scope', '$http', '$location
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
+	
+	if (1 == 1) {
+		$scope.tranderEmail = localStorage.getItem("tranderEmail");
+		$scope.tranderPassword = localStorage.getItem("tranderPassword");
+		$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+			$scope.userData = data;
+			$scope.loading = false;
+			if($scope.userData.status == 'verified'){
+				$scope.userID = $scope.userData.id;
+			}
+			else{
+				var pathurl = "/login";
+				console.log(pathurl);
+				$scope.loading = false;
+				$location.path(pathurl);
+			}
+		});
+	}
+	
+	$scope.submit = function(){
+			$scope.loading = true;
+			console.log($scope.name);
+			console.log($scope.userID);
+			console.log($scope.height);
+			console.log($scope.weight);
+			console.log($scope.gps);
+			$http.get('http://parssv.com/phpTrander/?action=add_user_profile&user_id='+ $scope.userID +'&name'+ $scope.name +'&height='+ $scope.height +'&weight='+ $scope.weight +'&age='+ $scope.age +'&body_type='+ $scope.btype +'&about='+ $scope.about +'&looking='+ $scope.looking +'&gps='+ $scope.gps +'&ethnicity='+ $scope.ethnicity).success(function(data) {
+			$scope.userDetails = data;
+			$scope.loading = false;
+			console.log($scope.userDetails);
+		});
+	}
 }]);
 
 /****** Photos Page controller *****/
@@ -217,6 +252,94 @@ phonecatControllers.controller('photosPageCtrl', ['$scope', '$http', '$location'
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
+	
+	if (1 == 1) {
+		$scope.tranderEmail = localStorage.getItem("tranderEmail");
+		$scope.tranderPassword = localStorage.getItem("tranderPassword");
+		$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+			$scope.userData = data;
+			$scope.loading = false;
+			if($scope.userData.status == 'verified'){
+				$scope.userID = $scope.userData.id;
+				$http.get('http://parssv.com/phpTrander/?action=show_images&user_id='+ $scope.userID).success(function(data) {
+				$scope.content = data;
+				console.log($scope.content);
+				if($scope.content.success == "true"){
+					$scope.pageContent = $scope.content.message;
+				}
+	});
+			}
+			else{
+				var pathurl = "/login";
+				console.log(pathurl);
+				$scope.loading = false;
+				$location.path(pathurl);
+			}
+		});
+	}
+	
+	$scope.submit = function() {
+		console.log($scope.userID);
+		console.log($scope.path);
+		$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/index.php?action=insert_photo&path='+ $scope.path +'&user_id='+$scope.userID).success(function(data) {
+			$scope.itemDetails = data;
+			console.log($scope.itemDetails);
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.setPrivate = function(id) {
+		console.log(id);
+		$scope.photo_id = id;
+		//$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=make_private&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
+			$scope.imgDetails = data;
+			console.log($scope.userDetails);
+			//$scope.loading = false;
+			window.location.reload();
+		});
+	};
+	
+	$scope.setPublic = function(id) {
+		console.log(id);
+		$scope.photo_id = id;
+		//$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=make_public&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
+			$scope.imgDetails = data;
+			//$scope.loading = false;
+			window.location.reload();
+		});
+	};
+	
+	$scope.setPictureProfile = function(id) {
+		console.log(id);
+		$scope.photo_id = id;
+		//$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=set_profile&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
+			$scope.imgDetails = data;
+			//$scope.loading = false;
+			window.location.reload();
+		});
+	};
+	
+	$scope.del = function (image_id) {
+		if(confirm("Do You Really Want to Delete!")){
+		$scope.photo_id = image_id;
+		console.log($scope.photo_id);
+		$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=delete_picture&photo_id='+ $scope.photo_id).success(function(data) {
+			$scope.userDetails = data;
+			$scope.loading = false;
+			window.location.reload();
+		});
+	}
+  };
+  
+  $scope.$watch('status', function(status) {
+       console.log(status);
+    });
 	
 	 var uploader = $scope.uploader = new FileUploader({
             url: 'http://parssv.com/phpTrander/index.php?action=upload_photos'

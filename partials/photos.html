@@ -7,7 +7,7 @@
 	</div>
 	<div class="col-xs-12">
 		<div class="p-box">
-			<form>
+			<form class="form" ng-submit="submit()" enctype="multipart/form-data">
 				<p><strong>Note: </strong>You can upload 2 Private and 3 Public Photos</p>
 				<div class="form-group">
 					<input type="file" nv-file-select="" uploader="uploader">
@@ -15,7 +15,7 @@
 				<div class="form-group">
 					<input type="submit" class="btn btn-default submit-btn" name="submit" value="Upload"/>
 				</div>
-			</for>
+			</form>
 		</div>	
 		 <div ng-repeat="item in uploader.queue">
                                 <div class="col-xs-12">
@@ -45,10 +45,28 @@
                                 </div>
                             </div>
 		<div class="col-xs-12">
-			<div class="row tb-row p-box">
-				<div class="col-xs-6"><img ng-src="img/bg1.jpg" width="100%"></div>
-				<div class="col-xs-6"><input type="submit" class="btn btn-default submit-btn" name="submit" value="Private"/><br><br>
-				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Public"/></div>
+			<div class="row tb-row">
+			    <div ng-if="imgDetails.error == 'true'" class="alert alert-danger">
+					{{imgDetails.message}}
+				</div>
+				<div ng-if="imgDetails.success == 'true'" class="alert alert-success">
+					{{imgDetails.message}}
+				</div>
+				<div class="col-xs-6 p-box" ng-repeat="c in content">
+					<form class="form">
+					<img ng-src="{{c.image_url}}" width="100%">
+					<label class="radio-inline">
+					  <input type="radio" ng-true-value="{{c.type}}=='private'" ng-false-value="{{c.type}}=='public'" ng-modal="private" name="status" ng-click="setPrivate(c.id)" ng-value="true"> private
+					</label>
+					<label class="radio-inline">
+					  <input type="radio" ng-model="public" name="status" ng-click="setPublic(c.id)" ng-value="public"> public
+					</label>
+					<label class="radio-inline">
+					  <input type="radio" ng-true-value="'yes'" ng-false-value="'no'" ng-model="profile" name="profile" ng-click="setPictureProfile(c.id)"> profile
+					</label>
+					<input type="button" class="btn btn-default submit-btn" ng-click="del(c.id)" value="Delete Picture"/>
+					</form>
+				</div>
 			</div>
 			
 		</div>

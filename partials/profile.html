@@ -14,34 +14,37 @@
 		</div>
 		<form class="form p-box" ng-submit="submit()">
 			<div class="form-group">
-				<span><i>H</i></span>
-				<input type="number" class="form-control" name="height" ng-model="height" placeholder="Enter your height" />
+				<span><i>Cm</i></span>
+				<input type="number" class="form-control" name="height" ng-model="height" placeholder="Height" />
 			</div>
 			<div class="form-group">
-				<span><i>W</i></span>
-				<input type="number" class="form-control" name="weight" ng-model="weight" placeholder="Enter your weight" />
+				<span><i>Kg</i></span>
+				<input type="number" class="form-control" name="weight" ng-model="weight" placeholder="Weight" />
 			</div>
 			<div class="form-group">
 				<span><i>A</i></span>
-				<input type="number" class="form-control" name="age" ng-model="age" placeholder="Enter your age" />
+				<input type="number" class="form-control" name="age" ng-model="age" placeholder="Age" />
 			</div>
 			<div class="form-group">
 				<span><i>E</i></span>
-				<input type="text" class="form-control" name="ethicity" ng-model="ethicity" placeholder="Enter eticity" required/>
+				<input type="text" class="form-control" name="ethnicity" ng-model="ethnicity" placeholder="Ethnicity" />
 			</div>
 			<div class="form-group">
 				<span><i>T</i></span>
-				<input type="text" class="form-control" name="body_type" ng-model="body_type" placeholder="Enter Body type" required/>
+				<input type="text" class="form-control" name="btype" ng-model="btype" placeholder="Body type" />
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" rows="4" name="about" ng-model="about" placeholder="Headline..." ></textarea>
 			</div>
 			<div class="form-group">
 				<label class="radio-inline">
 				  Looking For: 
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="male" id="male" ng-model="looking_for" value="Male"> Male
+				  <input type="radio" name="looking" id="looking" ng-model="looking" value="Male"> Male
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="female" id="female" ng-model="looking_for" value="Female"> Female
+				  <input type="radio" name="looking" id="looking" ng-model="looking" value="Female"> Female
 				</label>
 			</div>
 			<div class="form-group">
@@ -49,10 +52,10 @@
 				  Enable GPS: 
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="yes" id="yes" ng-model="yes" value="yes"> Yes
+				  <input type="radio" name="yes" id="yes" ng-model="gps" value="yes"> Yes
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="yes" id="yes" ng-model="no" value="yes"> No
+				  <input type="radio" name="yes" id="yes" ng-model="gps" value="no"> No
 				</label>
 			</div>
 			<div class="form-group">
