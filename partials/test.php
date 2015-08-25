@@ -598,41 +598,4 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'make_private'){ //make 
 				die();
 		}
 	}
-	
-	function get_user_info($user_id){
-		global $dbh;
-		$query = $dbh->prepare("SELECT * FROM users WHERE id = '$user_id'");
-		$query->execute();
-		$rows = $query->fetchAll();
-		$user = array();
-		foreach($rows as $row){
-            $user['id'] = $row['id'];
-			$user['name'] = $row['name'];
-			$user['email'] = $row['email'];
-			$user['status'] = $row['status'];
-			$user['profile_status'] = $row['profile_status'];
-			$user['password'] = $row['password'];
-			$user['date'] = $row['date'];
-		}
-		return $user;
-	}
-	
 ?>
-Siple Way to bind date Firebase
-// create our angular module and inject firebase
-angular.module('scheduleApp', ['firebase'])
-
-// create our main controller and get access to firebase
-.controller('mainController', function($scope, $firebase) {
-  
-  // connect to firebase 
-  var ref = new Firebase("https://burning-torch-4263.firebaseio.com/days");  
-  var fb = $firebase(ref);
-
-  // sync as object 
-  var syncObject = fb.$asObject();
-
-  // three way data binding
-  syncObject.$bindTo($scope, 'days');
-  
-});
