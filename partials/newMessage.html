@@ -5,23 +5,22 @@
 		<h3 style="margin:0px; text-align:center"></h3>
 		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
-	<div class="col-xs-12">
-		
-			<!-- CHAT MARKUP -->
-		<div class="example-chat l-demo-container">
+	<div class="col-xs-12 p-box" style="color:#fff;">
 		 
+		 <!-- CHAT MARKUP -->
+		<div class="example-chat l-demo-container">
+		  <header>Chat Demo</header>
 			
 			<div class='example-chat-toolbar'>
 			<input type='hidden' id='nameInput' value={{name}} placeholder='enter a username...'>
 		  </div>
-			<div class="col-xs-12 p-box">
-				 <header>Trander Chat Demo</header>
-				<ul id='example-messages' class="example-chat-messages"></ul>
-			</div>
-		  <div class="col-sm-12 p-box" style="margin-top:10px;">
-			<input type='text' id='messageInput' class="form-control" placeholder='Type your message...'>
-		  </div>
-		
+  
+		   <ul id='example-messages' class="example-chat-messages"></ul>
+
+		  <footer>
+			<input type='text' id='messageInput' class="form-control" placeholder='Type a message...'>
+		  </footer>
 		</div>
+
 	</div>
 </div>
