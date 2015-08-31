@@ -14,7 +14,7 @@ var phonecatApp = angular.module('phonecatApp', [
 // this factory returns a synchronized array of chat messages
 // let's create a re-usable factory that generates the $firebaseAuth instance
 phonecatApp.factory("Auth", ["$firebaseAuth",
-  function($firebaseAuth) {
+  function($firebaseAuth, $firebaseArray, $firebaseObject, FirebaseUrl) {
     var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
     return $firebaseAuth(ref);
   }
@@ -70,6 +70,14 @@ phonecatApp.config(['$routeProvider',
 	  when('/newMessage', {
         templateUrl: 'partials/newMessage.html',
         controller: 'newMessagePageCtrl'
+      }).
+	  when('/users', {
+        templateUrl: 'partials/users.html',
+        controller: 'usersPageCtrl'
+      }).
+	  when('/userProfile', {
+        templateUrl: 'partials/userProfile.html',
+        controller: 'userProfilePageCtrl'
       }).
 	   when('/basic_info', {
         templateUrl: 'partials/basic_info.html',

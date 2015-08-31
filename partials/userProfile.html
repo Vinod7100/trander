@@ -1,0 +1,54 @@
+<div class="col-xs-12 page" style="background-image:url('img/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
+	<loading></loading>
+	<div class="page-header">
+		<a href="" ng-click="showPage('/browse')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
+		<h3 style="margin:0px; text-align:center"></h3>
+		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
+	</div>
+	<div class="col-xs-12">
+		<div class="col-xs-6 col-xs-offset-3 ng-scope">
+			<img ng-src="{{info.user_image}}" width="100%">
+			<!---<img class="green-dot" ng-src="img/icon_green_dot.png" height="15" width="15">--->
+		</div>
+		<div class="clearfix"></div>
+		<div class="profile_name center" style="color:white; font-size:20px;">
+			<p class="center">{{info.name}}</p>
+			<p class="center">{{info.about_me}}</p>
+		</div>
+		<div ng-if="message.error == 'true'" class="alert alert-danger">
+			{{message.message}}
+		</div>
+		<div ng-if="message.success == 'true'" class="alert alert-success">
+			{{message.message}}
+		</div>
+	</div>
+	<div class="col-xs-12">
+		<div class="col-xs-6 p-box" style="height:40px;">Gender</div>
+		<div class="col-xs-6 p-box" style="height:40px;">{{info.gender}} </div>
+	</div>
+	<div class="col-xs-12">
+		<div class="col-xs-6 p-box" style="height:40px;">Height</div>
+		<div class="col-xs-6 p-box" style="height:40px;">{{info.height}} cm</div>
+	</div>
+	<div class="col-xs-12">
+		<div class="col-xs-6 p-box" style="height:40px;">Weight</div>
+		<div class="col-xs-6 p-box" style="height:40px;">{{info.weight}} kg</div>
+	</div>
+	<div class="col-xs-12">
+		<div class="col-xs-6 p-box" style="height:40px;">Ethnicity</div>
+		<div class="col-xs-6 p-box" style="height:40px;">{{info.ethnicity}}</div>
+	</div>
+	<div class="col-xs-12">
+		<div class="col-xs-6 p-box" style="height:40px;">Body Type</div>
+		<div class="col-xs-6 p-box" style="height:40px;">{{info.body_type}} </div>
+	</div>
+	<div class="col-xs-12" style="padding-bottom:10px;">
+		<div class="col-xs-6 p-box" style="height:40px;">Looking For</div>
+		<div class="col-xs-6 p-box" style="height:40px;">{{info.looking_for}} </div>
+	</div>
+	<div class="col-xs-12" style="padding-bottom:10px;">
+		<button type="submit" ng-click="invite(info.id)" class="form-control btn btn-primary">Invite User</button>
+		
+	</div>
+	<div class="clearfix"></div>
+</div>

@@ -558,53 +558,35 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'make_private'){ //make 
 	}
 	
 	
-	if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'set_profile'){ //
-		$photo_id = $_REQUEST['photo_id'];
-		$profile = 'yes';
-		$count = count_privte_image();
-		if(!$count)
-		{
+	if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'get_user_friend_list'){ //Show user friend list
+		$user_id = $_REQUEST['user_id'];
+		$status = 'accepted';
+		
+		$query = $dbh->prepare("SELECT * FROM user_friend_list WHERE request_from = '$user_id' AND status = '$status'");			$query1->execute();
+		$count = $query1->rowCount();
+		$rows = $query->fetchAll();
+		$i = 0;
+		foreach($rows as $row){
+			$friend[$i]['id'] = $row['request_to'];
 			
-			$query1 = $dbh->prepare("UPDATE photos SET is_profile = '$profile' WHERE id = '$photo_id'");
-			$query1->execute();
-			$count = $query1->rowCount();
-			if(!$count)
-			{
-				$array = array(
-				'error' => 'true',
-				'message' => $dbh->errorInfo()
-				);
-				header( "Content-Type: application/json" );
-				echo json_encode($array);
-				die();
-			}
-			else{
-				$array = array(
-				'success' => 'true',
-				'message' => 'Picture set as Profile'
-				);
-				header( "Content-Type: application/json" );
-				echo json_encode($array);
-				die();
-			}
+			$user = get_user_info($friend[$i]['id']);
+			$friend[$i]['name'] = $user['name'];
+			
+			$image = get_user_profile_pic($friend[$i]['id']);
+			$friend[$i]['user_image'] = $image;
+			$i++;
 		}
-		else{
-			$array = array(
-			'error' => 'true',
-				'message' => 'Picture must be public'
-				);
-				header( "Content-Type: application/json" );
-				echo json_encode($array);
-				die();
-		}
+		
+		header( "Content-Type: application/json" );
+		echo json_encode($friend);
+		die();
 	}
 	
 	function get_user_info($user_id){
 		global $dbh;
-		$query = $dbh->prepare("SELECT * FROM users WHERE id = '$user_id'");
+		
 		$query->execute();
 		$rows = $query->fetchAll();
-		$user = array();
 		foreach($rows as $row){
             $user['id'] = $row['id'];
 			$user['name'] = $row['name'];
@@ -614,7 +596,62 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'make_private'){ //make 
 			$user['password'] = $row['password'];
 			$user['date'] = $row['date'];
 		}
-		return $user;
+	}
+	
+	if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'get_user_profile'){ //Show user friend list
+		$user_id = $_REQUEST['user_id'];
+		
+		$query = $dbh->prepare("SELECT * FROM user_profile WHERE user_id = '$user_id'");			
+		$query->execute();
+		$count = $query->rowCount();
+		$rows = $query->fetchAll();
+	
+		foreach($rows as $row){
+			$user['height'] = $row['height'];
+			$user['weight'] = $row['weight'];
+			$user['ethnicity'] = $row['ethnicity'];
+			$user['body_type'] = $row['body_type'];
+			$user['looking_for'] = $row['looking_for'];
+			$user['about_me'] = $row['about_me'];
+			
+			$user = get_user_info($user_id);
+			$user['name'] = $user['name'];
+			
+			$image = get_user_profile_pic($user_id);
+			$user['user_image'] = $image;
+		}
+		
+		header( "Content-Type: application/json" );
+		echo json_encode($user);
+		die();
+	}
+	
+	if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'invites'){ //Show user friend list
+		$to = $_REQUEST['request_to'];
+		$from = $_REQUEST['request_from'];
+		$status = 'requested';
+		
+		$query = $dbh->prepare("Insert into user_invites(request_to, request_from, status) VALUES('$to', '$from', '$status')");
+		$query->execute();
+		$count = $query->rowCount();
+		if(!$count){
+			$array = array(
+				'error' => 'true',
+				'message' => $dbh->errorInfo()
+				);
+			header( "Content-Type: application/json" );
+			echo json_encode($array);
+			die();
+		}
+		else{
+			$array = array(
+				'success' => 'true',
+				'message' => 'Your request has been sent successfully!'
+				);
+			header( "Content-Type: application/json" );
+			echo json_encode($array);
+			die();
+		}
 	}
 	
 ?>

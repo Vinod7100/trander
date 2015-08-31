@@ -14,14 +14,14 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', '$http',
     $scope.orderProp = 'age';
   }]);
 
-phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Auth',
-  function($scope, $routeParams, Auth) {
+phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 
+  function($scope, $routeParams) {
     $scope.phoneId = $routeParams.phoneId;
   }]);
 
 /****** Home Page controller *****/  
-phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location',
-  function($scope, $http, $location) {
+phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 'Auth',
+  function($scope, $http, $location, Auth) {
 	  
 	$scope.showPage = function(pathurl){
 		console.log(pathurl);
@@ -46,6 +46,11 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location',
 					$http.get('http://parssv.com/phpTrander/?action=show_profile_pic&user_id='+ $scope.userID).success(function(data) {
 						$scope.profilePic = data;
 						console.log($scope.profilePic);
+						$scope.loading = false;
+					});
+					
+					$http.get('http://parssv.com/phpTrander/?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
+						$scope.name = data;
 						$scope.loading = false;
 					});
 	
@@ -94,13 +99,25 @@ phonecatControllers.controller('loginPageCtrl', ['$scope', '$http', '$location',
 				$location.path(pathurl);
 			}
 		});
-	}
-	
+		
+		}
+	 
 	
 	$scope.username = "";
 	$scope.password = "";
 	
 		$scope.submit = function(){
+			var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
+			ref.authWithPassword({
+			  email    : $scope.email,
+			  password : $scope.password
+			}, function(error, authData) {
+			  if (error) {
+				console.log("Login Failed!", error);
+			  } else {
+				console.log("Authenticated successfully with payload:", authData);
+			  }
+			});
 			$scope.loading = true;
 			$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.email +'&password='+ $scope.password).success(function(data) {
 			$scope.userDetails = data;
@@ -115,6 +132,7 @@ phonecatControllers.controller('loginPageCtrl', ['$scope', '$http', '$location',
 					// set localstorage username and password variables
 					localStorage.setItem("tranderEmail", $scope.email);
 					localStorage.setItem("tranderPassword", $scope.password);
+					
 					//saving username and password to localstoarge.
 					$scope.tranderEmail = localStorage.getItem("tranderEmail");
 					$scope.tranderPassword = localStorage.getItem("tranderPassword");
@@ -148,15 +166,12 @@ phonecatControllers.controller('registrationPageCtrl', ['$scope', '$http', '$loc
 		console.log($scope.password);
 		console.log($scope.gender);
 		
-		//$scope.createUser = function() {
-      //$scope.message = null;
-     // $scope.error = null;
-	//console.log($scope.email);
+		
       Auth.$createUser({
         email: $scope.email,
         password: $scope.password
       });
-    //};
+   
 		
 		$http.get('http://parssv.com/phpTrander/?action=register&name='+ $scope.name +'&age='+ $scope.age +'&email='+ $scope.email +'&password='+ $scope.password +'&gender='+ $scope.gender).success(function(data) {
 			$scope.userDetails = data;
@@ -446,21 +461,51 @@ phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location'
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
+	
+	if (1 == 1) {
+		$scope.tranderEmail = localStorage.getItem("tranderEmail");
+		$scope.tranderPassword = localStorage.getItem("tranderPassword");
+		$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+			$scope.userData = data;
+			$scope.loading = false;
+			if($scope.userData.status == 'verified'){
+				$scope.userID = $scope.userData.id;
+				$scope.loading = true;
+				$http.get('http://parssv.com/phpTrander/?action=show_all_users&user_id='+ $scope.userID).success(function(data) {
+					$scope.userData = data;
+					$scope.loading = false;
+				});
+			}
+			else{
+				var pathurl = "/login";
+				console.log(pathurl);
+				$scope.loading = false;
+				$location.path(pathurl);
+			}
+		});
+	}
+	
+		
+		
+		$scope.userDetail = function(id) {
+		var pathurl = "/userProfile";
+		console.log(pathurl);
+		$location.path(pathurl).search('user_id', id);
+		};
 }]);
-
 /****** Message Page controller *****/
-phonecatControllers.controller('messagePageCtrl', ['$scope', '$http', '$location',
-  function($scope, $http, $location) {
+phonecatControllers.controller('messagePageCtrl', ['$scope', '$http', '$location', '$routeParams',
+  function($scope, $http, $location, $routeParams) {
 	  
 	$scope.showPage = function(pathurl){
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
 }]);
-
-/****** New Conversation Page controller *****/
-phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$location', 'Auth',
-  function($scope, $http, $location, Auth) {
+/****** Selected User Profile Page controller *****/
+phonecatControllers.controller('userProfilePageCtrl', ['$scope', '$http', '$location', '$routeParams',
+  function($scope, $http, $location, $routeParams) {
 	  
 	$scope.showPage = function(pathurl){
 		console.log(pathurl);
@@ -476,21 +521,6 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
 				$scope.userID = $scope.userData.id;
-				$scope.email = $scope.userData.email;
-				$scope.name = $scope.userData.name;
-				$scope.password = $scope.userData.password;
-				console.log($scope.email);
-				 var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
-				ref.authWithPassword({
-				  email    : $scope.tranderEmail,
-				  password : $scope.tranderPassword
-				}, function(error, authData) {
-				  if (error) {
-					console.log("Login Failed!", error);
-				  } else {
-					console.log("Authenticated successfully with payload:", authData);
-				  }
-				});
 			}
 			else{
 				var pathurl = "/login";
@@ -501,24 +531,92 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 		});
 	}
 	
-    
-	/*$scope.createUser = function() {
-      $scope.message = null;
-      $scope.error = null;
-	//console.log($scope.email);
-      Auth.$createUser({
-        email: $scope.email,
-        password: $scope.password
-      }).then(function(userData) {
-        $scope.success = "User created with uid: " + userData.uid;
-      }).catch(function(error) {
-        $scope.error = error;
-      });
-    };*/
-	   
-    
+	$scope.id = $routeParams.user_id;
+	console.log($scope.id);
 	
-    $scope.removeUser = function() {
+	$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=get_user_profile_details&user_id='+ $scope.id).success(function(data) {
+			$scope.info = data;
+			$scope.loading = false;
+		});
+		
+	$scope.invite = function(){
+		$http.get('http://parssv.com/phpTrander/?action=invite_user&request_to='+ $scope.id +'&request_from='+ $scope.userID).success(function(data) {
+			$scope.message = data;
+			$scope.loading = false;
+		});
+	}
+}]);
+
+/****** New Conversation Page controller *****/
+phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$location', 'Auth', '$routeParams',
+  function($scope, $http, $location, Auth, $routeParams) {
+	  
+	$scope.showPage = function(pathurl){
+		console.log(pathurl);
+		$location.path(pathurl)
+	}
+	$scope.friendName = $routeParams.friend_name;
+	//console.log($scope.friendName);
+	
+		$scope.tranderEmail = localStorage.getItem("tranderEmail");
+		$scope.tranderPassword = localStorage.getItem("tranderPassword");
+		$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+			$scope.userData = data;
+			$scope.loading = false;
+			if($scope.userData.status == 'verified'){
+				$scope.userID = $scope.userData.id;
+				$scope.email = $scope.userData.email;
+				//$scope.name = $scope.userData.name;
+				$scope.password = $scope.userData.password;
+				
+				
+				
+				 var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
+				ref.authWithPassword({
+				  email    : $scope.tranderEmail,
+				  password : $scope.tranderPassword
+				}, function(error, authData) {
+				  if (error) {
+					console.log("Login Failed!", error);
+				  } else {
+					//console.log("Authenticated successfully with payload:", authData);
+				  }
+				});
+				$http.get('http://parssv.com/phpTrander/?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
+					$scope.name = data;
+					$scope.name = $scope.name.name;
+					console.log($scope.name);
+					$scope.loading = false;
+				
+	
+
+   /* var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
+    connectedRef.on("value", function(snap) {
+      if (snap.val() === true) {
+		$scope.status == 'connected';
+        //alert("connected");
+      } else {
+		$scope.status == 'Disconnected';
+        //alert("not connected");
+      }
+    });*/
+	
+	/*setOnline = function(uid){
+  var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
+  var connected = $firebaseObject(connectedRef);
+  var online = $firebaseArray(usersRef.child(uid+'/online'));
+
+  connected.$watch(function (){
+    if(connected.$value === true){
+      online.$add(true).then(function(connectedRef){
+        connectedRef.onDisconnect().remove();
+      });
+    }
+  });
+}*/
+    /*$scope.removeUser = function() {
       $scope.message = null;
       $scope.error = null;
 
@@ -530,60 +628,73 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
       }).catch(function(error) {
         $scope.error = error;
       });
-    };
+    };*/
 	
-	var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
-	var authData = ref.getAuth();
-	console.log(authData);
-	// Create a callback which logs the current auth state
-	  if (authData) {
-		console.log("User " + authData.uid + " is logged in with " + authData.provider);
-	        new Firebase('https://scorching-heat-3768.firebaseio.com/web/data'); 
-  // CREATE A REFERENCE TO FIREBASE
-  var messagesRef = new Firebase('https://scorching-heat-3768.firebaseio.com/messages');
+		var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
+		var authData = ref.getAuth();
+		console.log(authData);
+		// Create a callback which logs the current auth state
+		if (authData) {
+			console.log("User " + authData.uid + " is logged in with " + authData.provider);
+			
+			// CREATE A REFERENCE TO FIREBASE
+			var messagesRef = new Firebase('https://scorching-heat-3768.firebaseio.com/');
+			var path = $scope.name < $scope.friendName ? $scope.name+'/'+$scope.friendName : $scope.friendName+'/'+$scope.name;
+			var messagesRef = ref.child("message/"+path);
+			// REGISTER DOM ELEMENTS
+			var messageField = $('#messageInput');
+			var nameField = $('#nameInput');
+			var messageList = $('#example-messages');
 
-  // REGISTER DOM ELEMENTS
-  var messageField = $('#messageInput');
-  var nameField = $('#nameInput');
-  var messageList = $('#example-messages');
+			// LISTEN FOR KEYPRESS EVENT
+			messageField.keypress(function (e) {
+				if (e.keyCode == 13) {
+				//FIELD VALUES
+				var username = nameField.val();
+				var message = messageField.val();
 
-  // LISTEN FOR KEYPRESS EVENT
-  messageField.keypress(function (e) {
-    if (e.keyCode == 13) {
-      //FIELD VALUES
-      var username = nameField.val();
-      var message = messageField.val();
+				//SAVE DATA TO FIREBASE AND EMPTY FIELD
+				messagesRef.push({name:username, text:message, from:$scope.userID});
+				messageField.val('');
+				}
+			});
 
-      //SAVE DATA TO FIREBASE AND EMPTY FIELD
-      messagesRef.push({name:username, text:message, to:$scope.userID});
-      messageField.val('');
-    }
-  });
+			// Add a callback that is triggered for each chat message.
+			messagesRef.limitToLast(10).on('child_added', function (snapshot) {
+			//GET DATA
+			var data = snapshot.val();
+			$scope.data = snapshot.val();
+			var username = data.name || "anonymous";
+			var message = data.text;
+			
+			//$scope.dat.push(data);
+			//console.log("File Path:"+ $scope.path[]);
+			console.log(data);
+			//CREATE ELEMENTS MESSAGE & SANITIZE TEXT
+			var messageElement = $("<div>");
+			var nameElement = $("<strong class='example-chat-username'></strong>")
+			nameElement.text(username);
+			messageElement.text(message).prepend(nameElement);
 
-  // Add a callback that is triggered for each chat message.
-  messagesRef.limitToLast(10).on('child_added', function (snapshot) {
-    //GET DATA
-    var data = snapshot.val();
-    var username = data.name || "anonymous";
-    var message = data.text;
+			//ADD MESSAGE
+			messageList.append(messageElement)
 
-    //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
-    var messageElement = $("<li>");
-    var nameElement = $("<strong class='example-chat-username'></strong>")
-    nameElement.text(username);
-    messageElement.text(message).prepend(nameElement);
-
-    //ADD MESSAGE
-    messageList.append(messageElement)
-
-    //SCROLL TO BOTTOM OF MESSAGE LIST
-    messageList[0].scrollTop = messageList[0].scrollHeight;
-  });
-
-
-        } else {
-		console.log("User is logged out");
-	  }
+			//SCROLL TO BOTTOM OF MESSAGE LIST
+			messageList[0].scrollTop = messageList[0].scrollHeight;
+			});
+		} else {
+			console.log("User is logged out");
+		}
+	  
+	  });
+	}
+			else{
+				var pathurl = "/login";
+				console.log(pathurl);
+				$scope.loading = false;
+				$location.path(pathurl);
+			}
+		});
   
 }]);
 
@@ -688,11 +799,61 @@ phonecatControllers.controller('trandingPageCtrl', ['$scope', '$http', '$locatio
     //SCROLL TO BOTTOM OF MESSAGE LIST
     messageList[0].scrollTop = messageList[0].scrollHeight;
   });
+  
+  $scope.deleteChat = function(snap) {
+       console.log('delete');
+	   snap.ref().remove();
+    };
 
 
-        } else {
+      } else {
 		console.log("User is logged out");
 	  }
   
 }]);
 
+/****** Show user's friend Page controller *****/
+phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
+  function($scope, $http, $location) {
+	  
+	$scope.showPage = function(pathurl){
+		console.log(pathurl);
+		$location.path(pathurl)
+	}
+	if (1 == 1) {
+		$scope.tranderEmail = localStorage.getItem("tranderEmail");
+		$scope.tranderPassword = localStorage.getItem("tranderPassword");
+		$scope.loading = true;
+		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+			$scope.userData = data;
+			$scope.loading = false;
+			if($scope.userData.status == 'verified'){
+				$scope.userID = $scope.userData.id;
+				$scope.email = $scope.userData.email;
+				$scope.name = $scope.userData.name;
+				$scope.password = $scope.userData.password;
+				console.log($scope.email);
+				$http.get('http://parssv.com/phpTrander/?action=get_user_friend_list&user_id='+ $scope.userID).success(function(data) {
+				$scope.users = data;
+				console.log($scope.users);
+				$scope.loading = false;
+				});
+			}
+			else{
+				var pathurl = "/login";
+				console.log(pathurl);
+				$scope.loading = false;
+				$location.path(pathurl);
+			}
+		});
+	}
+	
+	$scope.showChat = function(name) {
+		var pathurl = "/newMessage";
+		console.log(pathurl);
+		$location.path(pathurl).search('friend_name', name);
+		
+		
+	};
+	
+}]);
