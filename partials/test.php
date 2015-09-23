@@ -133,6 +133,10 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'verify'){ //registerati
 		}
 
 	}
+if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'show_profile'){
+	$user_id = $_REQUEST['user_id'];
+	
+}
 
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'add_user_profile'){ //add new profile
 		$height = $_REQUEST['height'];
@@ -144,13 +148,13 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'add_user_profile'){ //a
 		$gps = $_REQUEST['gps'];
 		$ethnicity = $_REQUEST['ethnicity'];
 		$name = $_REQUEST['name'];
-                $user_id = '9';
+		$user_id = $_REQUEST['user_id'];
 
 		$count = is_profile_exist($user_id);
-		if($conut == 1)
+		if($count == 1)
 		{
-			$query = $dbh->prepare("UPDATE user_profile SET profile_name = '$name', height = $height, weight = '$weight', age = '$age', body_type = '$body_type', looking_for = '$looking_for', about_me = '$about', ethnicity = '$ethnicity', gps = '$gps' WHERE user_id = '$user_id'";
-			$query->execute();
+			$q = $dbh->prepare("UPDATE user_profile SET profile_name = '$name', height = $height, weight = '$weight', age = '$age', body_type = '$body_type', looking_for = '$looking_for', about_me = '$about', ethnicity = '$ethnicity', gps = '$gps' WHERE user_id = '$user_id'";
+			$q->execute();
 			$count = $query->rowCount();
 			if(!$count)
 			{
@@ -653,9 +657,29 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'make_private'){ //make 
 			die();
 		}
 	}
-	
+	if(isset($_REQUEST['action'] && $_REQUEST['action'] == 'show_profile')){
+		$user_id = $_REQUEST['user_id'];
+		$query = $dbh->prepare("SELECT * FROM user_profile WHERE user_id = '$user_id'");
+		$query->execute();
+		$count = $query->rowCount();
+		if($count == 1){
+			$rows = $query->fetchAll();
+			foreach($rows as $row){
+			$profile['height'] = $row['height'];
+			$profile['weight'] = $row['weight'];
+			$profile['ethnicity'] = $row['ethnicity'];
+			$profile['about_me'] = $row['about_me'];
+			$profile['looking_for'] = $row['looking_for'];
+			$profile['gps'] = $row['gps'];
+			$profile['body_type'] = $row['body_type'];
+			}
+			header( "Content-Type: application/json" );
+			echo json_encode($profile);
+			die();
+		}
+	}
 ?>
-Siple Way to bind date Firebase
+Simple Way to bind date Firebase
 // create our angular module and inject firebase
 angular.module('scheduleApp', ['firebase'])
 

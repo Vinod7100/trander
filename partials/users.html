@@ -6,10 +6,11 @@
 		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
 	<div class="col-xs-12">
-		<div class="col-xs-6 p-box" ng-repeat="user in users" ng-click="showChat(user.name)">
-			<img ng-src="{{user.user_image}}" width="100%">
-			<div><p></p></div>
-			<div><span class="pull-left">{{user.name}}</span><span class="pull-right"><img ng-src="img/icon_green_dot.png" width="15" height="15"></span></div>
+		<div class="col-xs-12 p-box" ng-repeat="user in users"  context-menu="menuOptions" ng-click="showChat(user.name)">
+			<img ng-src="{{user.user_image}}" width="40">
+			<span class="pull-right">{{user.name}}</span>
+			<div><span class="pull-left"><img ng-src="img/icon_green_dot.png" width="15" height="15"></span></div>
+			<!---<div context-menu="menuOptions">Right Click: block</div>-->
 		</div>
 		
 	</div>	

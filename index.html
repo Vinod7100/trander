@@ -21,6 +21,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-sanitize.js"></script>
   <script src="js/angular-animate.min.js"></script>
   <script src="js/TweenMax.min.js"></script>
+  <script src="js/contextMenu.js"></script>
 
   <script src="js/app.js"></script>
   <script src="js/controllers.js"></script>
@@ -38,5 +39,9 @@
 <body>
 	<div ng-view></div>
 </body>
-
+<script>
+	function changeFrame(id) {
+		$('#creditCardframe').attr('src', id);
+	}
+</script>	
 </html>

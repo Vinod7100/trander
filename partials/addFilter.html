@@ -1,0 +1,97 @@
+<div class="col-xs-12 page" style="background-image:url('img/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
+	<loading></loading>
+	<div class="page-header">
+		<a href="" ng-click="showPage('/home')" class="btn-pull-left"><i class="fa fa-arrow-circle-left"></i></a>
+		<h3 style="margin:0px; text-align:center"></h3>
+		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
+	</div>
+	<div class="col-xs-12">
+		<form class="form p-box" ng-submit="submit()">
+			<div class="form-group">
+				<span><i>H</i></span>
+				<select class="form-control" ng-model="height">
+				  <option value="4 AND 5">4'0 to 4'11</option>
+				  <option value="5 AND 6">5'0 to 5'11</option>
+				  <option value="6 AND 7">6'0 to 7'0</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<span><i>Kg</i></span>
+				<select class="form-control" ng-model="weight">
+				  <option value="50 AND 100">50-100</option>
+				  <option value="100 AND 150">100-150</option>
+				  <option value="151 AND 200">151-200</option>
+				  <option value="200 AND 250">200-250</option>
+				  <option value="250">250+</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<span><i>A</i></span>
+				<select class="form-control" ng-model="age">
+				  <option value="18 AND 30">18-30</option>
+				  <option value="30 AND 40">30-40</option>
+				  <option value="40 AND 45">40-45</option>
+				  <option value="45 AND 50">45-50</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="radio-inline">
+				 <strong>Ethnicity: </strong>
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ethnicity" ng-model="ethnicity" value="Black"> Black
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ethnicity" ng-model="ethnicity" value="White"> White
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ethnicity" ng-model="ethnicity" value="Middle Eastern"> Middle Eastern
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ethnicity" ng-model="ethnicity" value="Latino"> Latino
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ethnicity" ng-model="ethnicity" value="Asian"> Asian
+				</label>
+			</div>
+			<div class="form-group">
+				<label class="radio-inline">
+				 <strong>Body Type: </strong>
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="btype" ng-model="btype" value="Slim"> Slim
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="btype" ng-model="btype" value="Average"> Average
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="btype" ng-model="btype" value="Athletic"> Athletic
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="btype" ng-model="btype" value="Muscular"> Muscular
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="btype" ng-model="btype" value="Curvy"> Curvy
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="btype" ng-model="btype" value="Chubby"> Chubby
+				</label>
+			</div>
+			
+			<div class="form-group">
+				<label class="radio-inline">
+				  Looking For: 
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="looking" ng-model="looking" value="Male"> Male
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="looking" ng-model="looking" value="Female"> Female
+				</label>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Search"/>
+			</div>
+		</form>
+	</div>
+</div>

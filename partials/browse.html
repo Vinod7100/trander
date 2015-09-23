@@ -5,11 +5,107 @@
 		<h3 style="margin:0px; text-align:center"></h3>
 		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
+	<div class="col-xs-12" style="margin-bottom:10px;">
+		<a href="" ng-click="showFilter()" class="btn btn-primary pull-right">Filter <i class="fa fa-filter"></i></a>
+	</div>
 	<div class="col-xs-12">
+		<div ng-if="userDetails.error == 'true'" class="alert alert-danger">
+			{{userDetails.message}}
+		</div>
+		<div ng-if="userDetails.success == 'true'" class="alert alert-success">
+			{{userDetails.message}}
+		</div>
+	</div>	
+	<div class="col-xs-12 filter">
+		<form class="form p-box" ng-submit="submit()">
+			<div class="form-group">
+				<span><i>H</i></span>
+				<select class="form-control" ng-model="height">
+				  <option value="4 AND 5">4'0 to 4'11</option>
+				  <option value="5 AND 6">5'0 to 5'11</option>
+				  <option value="6 AND 7">6'0 to 7'0</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<span><i>Kg</i></span>
+				<select class="form-control" ng-model="weight">
+				  <option value="50 AND 100">50-100</option>
+				  <option value="100 AND 150">100-150</option>
+				  <option value="151 AND 200">151-200</option>
+				  <option value="200 AND 250">200-250</option>
+				  <option value="250">250+</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<span><i>A</i></span>
+				<select class="form-control" ng-model="age">
+				  <option value="18 AND 30">18-30</option>
+				  <option value="30 AND 40">30-40</option>
+				  <option value="40 AND 45">40-45</option>
+				  <option value="45 AND 50">45-50</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<span><i>Ethnicity</i></span>
+				<select class="form-control" name="ethnicity" ng-model="ethnicity">
+				  <option ng-disabled="true">Select Ethnicity</option>
+				  <option value="Black">Black</option>
+				  <option value="White">White</option>
+				  <option value="Middle Eastern">Middle Eastern</option>
+				  <option value="Latino">Latino</option>
+				  <option value="Asian">Asian</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<span><i>Body Type</i></span>
+				<select class="form-control" name="btype" ng-model="btype">
+				  <option ng-disabled="true">Select Body Type</option>
+				  <option value="Slim">Slim</option>
+				  <option value="Average">White</option>
+				  <option value="Athletic">Athletic</option>
+				  <option value="Muscular">Muscular</option>
+				  <option value="Curvy">Curvy</option>
+				  <option value="Chubby">Chubby</option>
+				</select>
+			</div>
+			
+			<div class="form-group">
+				<span><i>Looking For</i></span>
+				<select class="form-control" name="looking" ng-model="looking">
+				  <option ng-disabled="true">Select Gender</option>
+				  <option value="Male">Male</option>
+				  <option value="Female">Female</option>
+				  <option value="MTF">MTF</option>
+				  <option value="FTM">FTM</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Search"/>
+			</div>
+		</form>
+	</div>
+	<div class="col-xs-12">
+		<div ng-if="userFilterData.error == 'true'" class="alert alert-danger">
+			{{userFilterData.message}}
+		</div>
+		<div ng-if="userFilterData.success == 'true'" class="alert alert-success">
+			{{userFilterData.message}}
+		</div>
+	</div>	
+	<div class="col-xs-12 filter_result">
+	<div class="col-xs-6 p-box" ng-repeat="data in userFilterData" ng-click="userFilterDetail(data.id)">
+			<img ng-src="{{data.user_image}}" width="100%">
+			<div><p>{{data.name}} ({{data.gender}})</p></div>
+			<div><span class="pull-left">2 miles </span></div>
+			
+		</div>
+	</div>
+	<div class="col-xs-12 members">
+	
 		<div class="col-xs-6 p-box" ng-repeat="data in userData" ng-click="userDetail(data.id)">
 			<img ng-src="{{data.user_image}}" width="100%">
 			<div><p>{{data.name}} ({{data.gender}})</p></div>
-			<div><span class="pull-left">2 miles</span><div>
+			<div><span class="pull-left">2 miles</span></div>
 		</div>
 		<!---<div class="col-xs-6 p-box">
 			<img ng-src="img/bg2.jpg" width="100%">

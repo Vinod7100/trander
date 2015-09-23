@@ -53,13 +53,14 @@
 					{{imgDetails.message}}
 				</div>
 				<div class="col-xs-6 p-box" ng-repeat="c in content">
+				{{type}}
 					<form class="form">
 					<img ng-src="{{c.image_url}}" width="100%">
 					<label class="radio-inline">
-					  <input type="radio" ng-true-value="{{c.type}}=='private'" ng-false-value="{{c.type}}=='public'" ng-modal="private" name="status" ng-click="setPrivate(c.id)" ng-value="true"> private
+					  <input type="radio" ng-modal="c.type" name="status" ng-click="setPrivate(c.id)" ng-value="private"> private
 					</label>
 					<label class="radio-inline">
-					  <input type="radio" ng-model="public" name="status" ng-click="setPublic(c.id)" ng-value="public"> public
+					  <input type="radio" ng-model="c.type" name="status" ng-click="setPublic(c.id)" ng-value="public"> public
 					</label>
 					<label class="radio-inline">
 					  <input type="radio" ng-true-value="'yes'" ng-false-value="'no'" ng-model="profile" name="profile" ng-click="setPictureProfile(c.id)"> profile

@@ -12,6 +12,10 @@
 			{{userDetails.message}}
 		</div>
 		<form class="form p-box" ng-submit="submit()">
+			<div class="form-group" ng-if="tranderProfileCount == 2">
+				<span><i class="">S</i></span>
+				<input type="text" class="form-control" name="orderid" ng-model="obj.orderid" placeholder="Secret ID" required/>
+			</div>
 			<div class="form-group">
 				<span><i class="fa fa-user"></i></span>
 				<input type="text" class="form-control" name="name" ng-model="name" placeholder="Name" required/>
@@ -22,7 +26,7 @@
 			</div>
 			<div class="form-group">
 				<span><i class="fa fa-at"></i></span>
-				<input type="text" class="form-control" name="email" ng-model="email" placeholder="E-mail address" required/>
+				<input type="email" class="form-control" name="email" ng-model="email" placeholder="E-mail address" required/>
 			</div>
 			<div class="form-group">
 				<span><i class="fa fa-key"></i></span>
@@ -41,26 +45,30 @@
 			  </label>
 			</div>
 			<div class="radio">
-			  <label>
-				Transgender
+				<label>
+					Transgender
 				<div class="radio">
-			  <label>
-				<input type="radio" name="mtf" id="mtf" ng-model="gender" value="MTF" checked>
-				MTF
-			  </label>
-			</div>
-			<div class="radio">
-			  <label>
-				<input type="radio" name="ftm" id="ftm" ng-model="gender" value="FTM" checked>
-				FTM
-			  </label>
-			</div>
-			  </label>
+					<label>
+						<input type="radio" name="mtf" id="mtf" ng-model="gender" value="MTF" checked>
+						MTF
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="ftm" id="ftm" ng-model="gender" value="FTM" checked>
+						FTM
+					</label>
+				</div>
+				</label>
 			</div>
 			<div class="form-group">
 				<input type="submit" class="btn btn-default submit-btn" name="submit" value="Sign Up"/>
 			</div>
+			
 		</form>
+		<hr/>
+		<div class="col-xs-12" ng-if="tranderProfileCount == 2">
+			<p style="color:#fff">Do not have Secret ID ? <a href="#/buyProfile">Tap Here</a></p>
+		</div>
 	</div>
-	
 </div>

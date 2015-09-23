@@ -14,17 +14,19 @@
 			<div class='example-chat-toolbar'>
 			<input type='hidden' id='nameInput' value={{name}} placeholder='enter a username...'>
 		  </div>
-			<div class="col-xs-12 p-box">
-				 <header>Trander Chat Demo</header>
-				<ul id='example-messages' class="example-chat-messages"></ul>
+			<div class="col-xs-12 p-box" style="color:#fff; background:none; padding:0px; box-shadow:none">
+				<ul id='example-messages' class="example-chat-messages" style="margin:0px; padding:0px; width:100%; float:left; padding-bottom:50px"></ul>
 			</div>
-		  <div class="col-sm-12 p-box" style="margin-top:10px;">
+		  <!--<div class="col-sm-12 p-box" style="margin-top:10px;">
 			<input type='text' id='messageInput' class="form-control" placeholder='Type your message...'>
-		  </div>
-		  <div class="col-sm-12 p-box" style="margin-top:10px;">
+		  </div>-->
+		  <div class="col-sm-12" style="margin-top:10px;">
 			<a href="" ng-click="deleteChat()" >delete</a>
 		  </div>
 		
 		</div>
 	</div>
+	<footer style="position:fixed; bottom:0px; width:100%">
+		<input type='text' id='messageInput' class="form-control" style="padding-left:10px" placeholder='Type a message...'>
+	</footer>
 </div>

@@ -79,7 +79,15 @@ button.transparent{
 }
 .radio{font-size: 18px;
   color: white;}
-input[type="text"], input[type="email"],  input[type="number"], input[type="password"], select{
+.profile .form-control[disabled], .profile input[type="text"], .profile input[type="email"], .profile input[type="number"], .profile input[type="password"], .profile select.form-control{
+	background-color:rgba(112, 108, 106, 0.99);
+	color:white;
+	padding-left:67px ;
+	height:45px !important;
+	font-size: 18px !important;
+	border:0px;
+}
+.form-control[disabled], input[type="text"], input[type="email"],  input[type="number"], input[type="password"], select.form-control{
 	background-color:rgba(112, 108, 106, 0.99);
 	color:white;
 	padding-left:50px ;
@@ -120,6 +128,15 @@ padding-left:8px !important;
 	text-align: center;
 	height: 45px;
 	width:45px;
+	display: table;
+}
+.profile .form-group span{
+	background: rgba(0,0,0,0.5);
+	position: absolute;
+	color: #fff;
+	text-align: center;
+	height: 45px;
+	width:67px;
 	display: table;
 }
 .form-group span i{
@@ -190,4 +207,51 @@ a:hover{
 	position: absolute;
 	right: 26px;
 	bottom: 5%;
+}
+
+/***bubble css***/
+.bubble-left{
+	text-align:left;
+	position:relative;
+	float:left;
+	width:100%;
+	padding-left:10px;
+}
+.bubble-left p::before{
+	content:" ";
+	position:absolute;
+	top:3px;
+	left:0px;
+	border-top: 0px solid transparent;
+	border-bottom: 10px solid transparent; 
+	border-right:10px solid rgba(255,255,255,0.4);
+}
+.bubble-right p::after{
+	content:" ";
+	position:absolute;
+	top:3px;
+	right:0px;
+	border-top: 0px solid transparent;
+	border-bottom: 10px solid transparent; 
+	border-left:10px solid rgba(255,255,255,0.4);
+}
+.bubble-right{
+	text-align:right;
+	position:relative;
+	float:left;
+	width:100%;
+	padding-right:10px
+}
+.bubble-left p{
+	float:left;
+}
+.bubble-right p{
+	float:right;
+}
+.bubble-left p, .bubble-right p{
+	width:85%;
+	padding:3px;
+	text-align:center;
+	background-color:rgba(255,255,255,0.4);
+	border-radius:3px;
 }
