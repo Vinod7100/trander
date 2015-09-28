@@ -3,7 +3,7 @@
 /* Controllers */
 
 var phonecatControllers = angular.module('phonecatControllers', []);
-
+var url = "http://parssv.com/phpTrander/";
 
 phonecatControllers.controller('PhoneListCtrl', ['$scope', '$http',
   function($scope, $http) {
@@ -32,7 +32,7 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
@@ -53,7 +53,33 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 
 						$scope.name = data;
 						$scope.loading = false;
 					});
-	
+					
+					
+					var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
+					var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence/"+ $scope.name);
+					var lastOnlineRef = new Firebase("https://scorching-heat-3768.firebaseio.com/lastonline/"+ $scope.name);
+					connectedRef.on("value", function(snap) {
+					   if (snap.val()) {
+						//alert("connected");
+						lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+						//Firebase.goOnline();
+						presenceRef.onDisconnect().remove();
+						presenceRef.set(true);
+					  } else {
+						
+						//alert("not connected");
+						presenceRef.set(false);
+						
+					  }
+					});
+					
+					new Firebase('https://scorching-heat-3768.firebaseio.com/'+ $scope.name).transaction(function(currValue) {
+					return (currValue||0)+1;
+					}, function(err, success, snap) {
+						if( err ) { throw err; }
+						console.log('counter updated to '+snap.val());
+					});
+					
 			}
 			else{
 				var pathurl = "/login";
@@ -66,6 +92,10 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 
 	
 	$scope.logout = function(){
 		$scope.loading = true;
+		
+		Firebase.goOffline();
+		
+		
 		Auth.$unauth();
 		// unset localstorage username and password variables
 		localStorage.setItem("tranderEmail", "");
@@ -97,6 +127,12 @@ phonecatControllers.controller('loginPageCtrl', ['$scope', '$http', '$location',
 				var pathurl = "/home";
 				console.log(pathurl);
 				$location.path(pathurl);
+				
+			}
+			if($scope.userData.status == 'registered'){
+				var pathurl = "/verify";
+				console.log(pathurl);
+				$location.path(pathurl);
 			}
 		});
 		
@@ -107,6 +143,7 @@ phonecatControllers.controller('loginPageCtrl', ['$scope', '$http', '$location',
 	$scope.password = "";
 	
 		$scope.submit = function(){
+			Firebase.goOnline();
 			var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
 			ref.authWithPassword({
 			  email    : $scope.email,
@@ -223,9 +260,9 @@ phonecatControllers.controller('verifyPageCtrl', ['$scope', '$http', '$location'
 			console.log($scope.userDetails);
 			if($scope.userDetails.success == 'true')
 			{
-				/*var pathurl = "/basic_info";
+				var pathurl = "/profile";
 				console.log(pathurl);
-				$location.path(pathurl);*/
+				$location.path(pathurl);
 			}
 		});
 	}
@@ -362,7 +399,7 @@ phonecatControllers.controller('photosPageCtrl', ['$scope', '$http', '$location'
 		$http.get('http://parssv.com/phpTrander/?action=make_public&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
 			$scope.imgDetails = data;
 			$scope.loading = false;
-			//window.location.reload();
+			
 		});
 	};
 	
@@ -373,7 +410,7 @@ phonecatControllers.controller('photosPageCtrl', ['$scope', '$http', '$location'
 		$http.get('http://parssv.com/phpTrander/?action=set_profile&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
 			$scope.imgDetails = data;
 			$scope.loading = false;
-			//window.location.reload();
+			
 		});
 	};
 	
@@ -469,7 +506,7 @@ phonecatControllers.controller('recoverPageCtrl', ['$scope', '$http', '$location
 		});
 	}
   
-  }]);
+}]);
 
 /****** Browse Page controller *****/
 phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location',
@@ -506,7 +543,6 @@ phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location'
 	
 	$scope.submit = function(){
 		$scope.loading = true;
-		
 		console.log($scope.looking);
 		console.log($scope.height);
 		console.log($scope.btype);
@@ -521,6 +557,7 @@ phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location'
 		$scope.loading = false;
 		});
 	}
+	
 	$('.filter').hide();
 	$scope.showFilter = function() {
 		$('.filter').slideToggle();
@@ -531,12 +568,14 @@ phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location'
 		console.log(pathurl);
 		$location.path(pathurl).search('user_id', id);
 	};
+	
 	$scope.userFilterDetail = function(id) {
 		var pathurl = "/userProfile";
 		console.log(pathurl);
 		$location.path(pathurl).search('user_id', id);
 	};
 }]);
+
 /****** Message Page controller *****/
 phonecatControllers.controller('messagePageCtrl', ['$scope', '$http', '$location', '$routeParams',
   function($scope, $http, $location, $routeParams) {
@@ -545,13 +584,7 @@ phonecatControllers.controller('messagePageCtrl', ['$scope', '$http', '$location
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
-	
-	new Firebase('https://scorching-heat-3768.firebaseio.com/'+ $scope.name).transaction(function(currValue) {
-    return (currValue||0)+1;
-	}, function(err, success, snap) {
-		if( err ) { throw err; }
-		console.log('counter updated to '+snap.val());
-	});
+			
 	
 }]);
 /****** Selected User Profile Page controller *****/
@@ -623,7 +656,6 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 				$scope.password = $scope.userData.password;
 				
 				
-				
 				 var ref = new Firebase("https://scorching-heat-3768.firebaseio.com");
 				ref.authWithPassword({
 				  email    : $scope.tranderEmail,
@@ -640,33 +672,22 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 					$scope.name = $scope.name.name;
 					console.log($scope.name);
 					$scope.loading = false;
-				
-	
 
-   /* var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
-    connectedRef.on("value", function(snap) {
-      if (snap.val() === true) {
-		$scope.status == 'connected';
-        //alert("connected");
-      } else {
-		$scope.status == 'Disconnected';
-        //alert("not connected");
-      }
-    });*/
-	
+    
+		
 	/*setOnline = function(uid){
-  var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
-  var connected = $firebaseObject(connectedRef);
-  var online = $firebaseArray(usersRef.child(uid+'/online'));
+	  var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
+	  var connected = $firebaseObject(connectedRef);
+	  var online = $firebaseArray(usersRef.child(uid+'/online'));
 
-  connected.$watch(function (){
-    if(connected.$value === true){
-      online.$add(true).then(function(connectedRef){
-        connectedRef.onDisconnect().remove();
-      });
-    }
-  });
-}*/
+	  connected.$watch(function (){
+		if(connected.$value === true){
+		  online.$add(true).then(function(connectedRef){
+			connectedRef.onDisconnect().remove();
+		  });
+		}
+	  });
+	}*/
     /*$scope.removeUser = function() {
       $scope.message = null;
       $scope.error = null;
@@ -686,8 +707,7 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 		//console.log(authData);
 		// Create a callback which logs the current auth state
 		if (authData) {
-			console.log("User " + authData.uid + " is logged in with " + authData.provider);
-			
+			//console.log("User " + authData.uid + " is logged in with " + authData.provider);
 			// CREATE A REFERENCE TO FIREBASE
 			var messagesRef = new Firebase('https://scorching-heat-3768.firebaseio.com/');
 			var path = $scope.name < $scope.friendName ? $scope.name +'/'+ $scope.friendName : $scope.friendName +'/'+ $scope.name;
@@ -698,26 +718,44 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 			var nameField = $('#nameInput');
 			var messageList = $('#example-messages');
 			// LISTEN FOR KEYPRESS EVENT
+			
+			
+			
 			sendMessageBtn.click(function (e) {
 				//if (e.keyCode == 13) {
 				//FIELD VALUES
 				var username = nameField.val();
-				
+				var status = "unread";
 				var message = messageField.val();
 				if(message == "" || message == null){
 				}else{
 					//SAVE DATA TO FIREBASE AND EMPTY FIELD
-					messagesRef.push({name:username, text:message, from:$scope.userID});
+					messagesRef.push({status:status, name:username, text:message, from:$scope.userID});
 					messageField.val('');
 				}
 				//}
 			});
-
+			
+			var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence/"+ $scope.friendName);
+				presenceRef.on("value", function(snap) {
+						var key = snap.key();
+						var value = snap.val();
+						//console.log(key);
+						if (snap.val() === true) {
+							$('#status').html('online');
+						}
+						else{
+							$('#status').html('offline');
+						}
+					});
+			
 			// Add a callback that is triggered for each chat message.
 			messagesRef.limitToLast(20).on('child_added', function (snapshot) {
 			//GET DATA
+			var num = snapshot.numChildren();
 			var data = snapshot.val();
-			$scope.data = snapshot.val();
+			var key = snapshot.key();
+			console.log(key);
 			var username = data.name || "anonymous";
 			var message = data.text;
 			var matchUsername = $scope.name;
@@ -725,14 +763,14 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 				var bubbleClass = "bubble-left";
 			}else{
 				var bubbleClass = "bubble-right";
+				/*path = messagesRef.toString();
+				console.log(path);
+			    var updateRef = new Firebase(path +"/"+ key);
+				updateRef.update({status:status});*/
 			}
-			
-			//console.log("user: "+ username);
-			//console.log("user:M "+ matchUsername);
-			
 			//$scope.dat.push(data);
 			//console.log("File Path:"+ $scope.path[]);
-			console.log(data);
+			//console.log(num);
 			//CREATE ELEMENTS MESSAGE & SANITIZE TEXT
 			var messageElement = $("<div class='"+ bubbleClass +"'>");
 			var nameElement = $("<strong class='example-chat-username'></strong>")
@@ -837,6 +875,7 @@ phonecatControllers.controller('trandingPageCtrl', ['$scope', '$http', '$locatio
 				//FIELD VALUES
 				var username = nameField.val();
 				var message = messageField.val();
+				
 
 				//SAVE DATA TO FIREBASE AND EMPTY FIELD
 				messagesRef.push({name:username, text:message, userId:$scope.userID});
@@ -873,7 +912,8 @@ phonecatControllers.controller('trandingPageCtrl', ['$scope', '$http', '$locatio
   
 		$scope.deleteChat = function(snap) {
 			console.log('delete');
-			snap.ref().remove();
+			//snap.ref().remove();
+			messagesRef.remove();
 		};
 
 
@@ -907,6 +947,33 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 				$http.get('http://parssv.com/phpTrander/?action=get_user_friend_list&user_id='+ $scope.userID).success(function(data) {
 				$scope.users = data;
 				console.log($scope.users);
+				
+				$scope.log = [];
+				for(var i=0; i <= $scope.users.length; i++)
+				{ 
+					var frnd = $scope.users[i];
+					var id = frnd.id;
+					var name = frnd.name;
+					//console.log(name);
+					var image = frnd.user_image;
+					//console.log(image);
+					/*$(".msg").append("<div class='col-xs-12 p-box' ng-click='showChat("+ name +")'><img src="+ image +" width='40'><span class='pull-right'>"+ name +" </span><div><span class='pull-left'><img src='img/icon_green_dot.png' width='15' height='15'></span></div></div>");*/
+					var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence/"+ name);
+					presenceRef.on("value", function(snap) {
+						var key = snap.key();
+						var value = snap.val();
+						$scope.key = key;
+						$scope.value = value;
+						//console.log(key);
+						//console.log(value);
+						$scope.log.push({name: $scope.key, value:$scope.value});
+						console.log($scope.log);
+						/*if (snap.val() === true) {
+							$scope.online = true;
+						}*/	
+					});
+				}
+				
 				$scope.loading = false;
 				});
 			}
@@ -920,6 +987,9 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 	}
 	
 	$scope.showChat = function(name) {
+		var messagesRef = new Firebase('https://scorching-heat-3768.firebaseio.com/message/'+ name);
+		var status = "read";
+		//messagesRef.push({status:status});
 		var pathurl = "/newMessage";
 		console.log(pathurl);
 		$location.path(pathurl).search('friend_name', name);
@@ -927,7 +997,7 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 	
 	$scope.menuOptions = [
           ['Block User', function (uid) {
-            console.log(uid);
+           alert(uid);
           }],
           null,
           ['Add to Favourates', function () {
@@ -963,3 +1033,32 @@ phonecatControllers.controller('buyProfilePageCtrl', ['$scope', '$http', '$locat
 	changeFrame($scope.url);
 	
 }]);
+
+
+/*
+var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
+					var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence");
+					var lastOnlineRef = new Firebase("https://scorching-heat-3768.firebaseio.com/lastonline/"+ $scope.name);
+					connectedRef.on("value", function(snap) {
+					   if (snap.val()) {
+						//alert("connected");
+						lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+						//Firebase.goOnline();
+						presenceRef.onDisconnect().remove();
+						presenceRef.push({name:$scope.name, status:true});
+					  } else {
+						
+						//alert("not connected");
+						presenceRef.set(false);
+						
+					  }
+					});
+					
+				presenceRef.on('child_added', function (snapshot) {
+				//GET DATA
+				var data = snapshot.val();
+				snapshot.forEach(function(vote) {
+					$scope.log.push({name: data.name, value:data.status});
+				});
+				console.log($scope.log);
+				});*/

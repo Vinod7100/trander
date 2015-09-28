@@ -5,12 +5,14 @@
 		<h3 style="margin:0px; text-align:center"></h3>
 		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
-	<div class="col-xs-12">
+	
+	<div class="col-xs-12 msg">
 		<div class="col-xs-12 p-box" ng-repeat="user in users"  context-menu="menuOptions" ng-click="showChat(user.name)">
-			<img ng-src="{{user.user_image}}" width="40">
+			<!---<div ng-repeat="ol in log" ng-if="ol.name == user.name">--->
+			<img ng-src="{{user.user_image}}" width="40" height="40" class="img-rounded">
 			<span class="pull-right">{{user.name}}</span>
-			<div><span class="pull-left"><img ng-src="img/icon_green_dot.png" width="15" height="15"></span></div>
-			<!---<div context-menu="menuOptions">Right Click: block</div>-->
+			<div ><span ng-if="ol.status" class="pull-left" style="position: absolute; top: 31px; left: 34px;"><img ng-src="img/icon_green_dot.png" width="15" height="15"></span></div>
+			</div>
 		</div>
 		
 	</div>	
