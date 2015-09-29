@@ -53,9 +53,9 @@
 					{{imgDetails.message}}
 				</div>
 				<div class="col-xs-6 p-box" ng-repeat="c in content">
-				{{type}}
+				
 					<form class="form">
-					<img ng-src="{{c.image_url}}" width="100%">
+					<div style="width: 100%; height: 200px;background-image: url({{c.image_url}});background-size: cover;background-position: 50% 50%;background-repeat: no-repeat;"></div>
 					<label class="radio-inline">
 					  <input type="radio" ng-modal="c.type" name="status" ng-click="setPrivate(c.id)" ng-value="private"> private
 					</label>

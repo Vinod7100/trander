@@ -177,6 +177,7 @@ padding-left:8px !important;
 .box{
 	background-color: rgb(173, 16, 16);
 	color: white;
+	border: 1px solid rgb(81, 41, 49);
 	text-align: center;
 	font-size: 18px;
 	height:120px;padding:10px;
