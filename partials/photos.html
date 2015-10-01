@@ -9,41 +9,37 @@
 		<div class="p-box">
 			<form class="form" ng-submit="submit()" enctype="multipart/form-data">
 				<p><strong>Note: </strong>You can upload 2 Private and 3 Public Photos</p>
-				<div class="form-group">
-					<input type="file" nv-file-select="" uploader="uploader">
-				</div>
+					<div class="upload-buttons">
+						<div class="up-buttons">
+							<div ngf-select ngf-drop ng-model="files"
+								 class="container drop-box text-center" ngf-multiple="'multiple'" ngf-pattern="'image/*'" accept="'image/*'"
+								 ngf-capture="'mobile'"><i class="fa fa-camera" style="font-size:40px;"></i>
+							  <span ng-show="dropAvailable">Drop File or Paste Image</span>
+							</div>
+							<br/>
+							<div class="preview center">Preview Image:</div>
+							<div class="col-xs-8 col-xs-offset-2 center"><img ngf-src="!files[0].$error && files[0]" class="img-rounded img-responsive"> </div>
+						</div>
+					</div>
+					<div class="col-xs-12 progressBar" style="margin-top:5px;">
+						<div class="col-xs-10 sel-file" ng-repeat="f in files">
+							<div ng-hide="f.$error">
+								<!---<img ngf-thumbnail="!f.$error && f" class="thumb">--->
+								<div class="progress">
+								  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{f.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{f.progress}}%">
+									<span class="sr-only">{{f.progress}}% Complete (warning)</span>
+								  </div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-2"><button type="button" ng-click="files = null" ng-show="files" class="btn btn-danger btn-xs">x</button></div>
+					</div>
 				<div class="form-group">
 					<input type="submit" class="btn btn-default submit-btn" name="submit" value="Upload"/>
 				</div>
 			</form>
 		</div>	
-		 <div ng-repeat="item in uploader.queue">
-                                <div class="col-xs-12">
-									<strong>Name: {{ item.file.name }}</strong>
-									<span>
-										<span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok" style="color:green;"></i></span>
-										<span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle" style="color:red;"></i></span>
-										<span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-									</span>
-								</div>
-                                <div class="col-xs-12" ng-show="uploader.isHTML5">
-                                    <div class="progress" style="margin-bottom: 0;">
-                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-xs-12" nowrap style="padding-top:10px; padding-bottom:10px;">
-                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                                        <span class="glyphicon glyphicon-upload"></span> Upload
-                                    </button>
-									<button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                        <span class="glyphicon glyphicon-trash"></span> Remove
-                                    </button>
-                                </div>
-                            </div>
+
 		<div class="col-xs-12">
 			<div class="row tb-row">
 			    <div ng-if="imgDetails.error == 'true'" class="alert alert-danger">
@@ -55,7 +51,7 @@
 				<div class="col-xs-6 p-box" ng-repeat="c in content">
 				
 					<form class="form">
-					<div style="width: 100%; height: 200px;background-image: url({{c.image_url}});background-size: cover;background-position: 50% 50%;background-repeat: no-repeat;"></div>
+					<div style="width: 100%; height: 150px;background-image: url({{c.image_url}});background-size: cover;background-position: 50% 50%;background-repeat: no-repeat;"></div>
 					<label class="radio-inline">
 					  <input type="radio" ng-modal="c.type" name="status" ng-click="setPrivate(c.id)" ng-value="private"> private
 					</label>

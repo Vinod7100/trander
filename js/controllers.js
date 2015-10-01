@@ -47,8 +47,6 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 
 						$scope.profilePic = data;
 						$scope.image = $scope.profilePic.profile;
 						console.log($scope.profilePic);
-						var userprofileRef = new Firebase('https://scorching-heat-3768.firebaseio.com/profile');
-						userprofileRef.child($scope.name).update({image: $scope.image});
 						$scope.loading = false;
 					});
 					
@@ -76,7 +74,9 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 
 	
 	$scope.logout = function(){
 		$scope.loading = true;
-		
+		console.log($scope.name);
+		//var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence");
+		//presenceRef.child($scope.name).remove();
 		//Firebase.goOffline();
 		
 		
@@ -308,11 +308,6 @@ phonecatControllers.controller('profilePageCtrl', ['$scope', '$http', '$location
 			console.log($scope.height);
 			console.log($scope.weight);
 			console.log($scope.gps);
-			var userprofileRef = new Firebase('https://scorching-heat-3768.firebaseio.com/profile');
-			userprofileRef.child($scope.name).set({
-			  id: $scope.userID,
-			  gender: $scope.gender
-			  });
 			$http.get('http://parssv.com/phpTrander/?action=add_user_profile&gender='+ $scope.gender +'&user_id='+ $scope.userID +'&name='+ $scope.name +'&height='+ $scope.height +'&weight='+ $scope.weight +'&age='+ $scope.age +'&body_type='+ $scope.btype +'&about='+ $scope.about +'&looking='+ $scope.looking +'&gps='+ $scope.gps +'&ethnicity='+ $scope.ethnicity).success(function(data) {
 			$scope.userDetails = data;
 			$scope.loading = false;
@@ -322,8 +317,8 @@ phonecatControllers.controller('profilePageCtrl', ['$scope', '$http', '$location
 }]);
 
 /****** Photos Page controller *****/
-phonecatControllers.controller('photosPageCtrl', ['$scope', '$http', '$location', 'FileUploader',
-  function($scope, $http, $location, FileUploader) {
+phonecatControllers.controller('photosPageCtrl', ['$scope', '$http', '$location', '$timeout', '$compile', 'Upload', 
+function ($scope, $http, $location, $timeout, $compile, Upload) {
 	  
 	$scope.showPage = function(pathurl){
 		console.log(pathurl);
@@ -359,16 +354,9 @@ phonecatControllers.controller('photosPageCtrl', ['$scope', '$http', '$location'
 	}
 	
 	$scope.submit = function() {
+		$scope.image_submit($scope.userID);
 		console.log($scope.userID);
 		console.log($scope.path);
-		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/index.php?action=insert_photo&path='+ $scope.path +'&user_id='+$scope.userID).success(function(data) {
-			$scope.itemDetails = data;
-			console.log($scope.itemDetails);
-			$scope.loading = false;
-			window.location.reload();
-			
-		});
 	};
 	
 	$scope.setPrivate = function(id) {
@@ -416,66 +404,46 @@ phonecatControllers.controller('photosPageCtrl', ['$scope', '$http', '$location'
 	}
   };
   
-  $scope.$watch('status', function(status) {
-       //console.log(status);
-    });
-	
-	 var uploader = $scope.uploader = new FileUploader({
-            url: 'http://parssv.com/phpTrander/index.php?action=upload_photos'
+  $scope.$watch('files', function () {
+             $scope.upload($scope.files);
         });
-		
-	uploader.filters.push({
-            name: 'customFilter',
-            fn: function(item /*{File|FileLikeObject}*/, options) {
-                return this.queue.length < 10;
+
+        $scope.upload = function (files) {
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    Upload.upload({
+                        url: 'http://parssv.com/phpTrander/?action=test', 
+                        headers: {'Content-Type': file.type},
+                        method: 'POST',
+                        data: file,
+                        file: file, 
+                    }).progress(function (evt) {
+                        // Math.min is to fix IE which reports 200% sometimes
+						file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+						var progressPercentage = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+						console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                    }).success(function (data, status, headers, config) {
+                        console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+						file.result = data;
+                        $scope.image_submit = function(id) {
+							console.log(id);
+							console.log(config.file.name);
+							var path = 'http://parssv.com/phpTrander/uploads/'+ config.file.name;
+							$scope.loading = true;
+						   $http.get('http://parssv.com/phpTrander/index.php?action=insert_photo&path='+ path +'&user_id='+ id).success(function(data) {
+							$scope.itemDetails = data;
+							console.log($scope.itemDetails);
+							$scope.loading = false;
+							window.location.reload();
+							
+							});
+						};
+            
+                    });
+                }
             }
-        });
-
-		$scope.path = [];
-        // CALLBACKS
-
-        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-            console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-        uploader.onAfterAddingFile = function(fileItem) {
-            console.info('onAfterAddingFile', fileItem);
-        };
-        uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-        };
-        uploader.onBeforeUploadItem = function(item) {
-            console.info('onBeforeUploadItem', item);
-        };
-        uploader.onProgressItem = function(fileItem, progress) {
-            console.info('onProgressItem', fileItem, progress);
-        };
-        uploader.onProgressAll = function(progress) {
-            console.info('onProgressAll', progress);
-        };
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            console.info('onSuccessItem', fileItem, response, status, headers);
-			console.log(fileItem);
-
-        };
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
-            console.info('onErrorItem', fileItem, response, status, headers);
-        };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
-        };
-        uploader.onCompleteItem = function(fileItem, response, status, headers) {
-            console.info('onCompleteItem', fileItem, response, status, headers);
-			
-			var myEl = angular.element('#item-images');
-			$scope.path.push(response.path);
-			//console.log("File Path:"+ $scope.path[]);
-			//myEl.append("<input type='text' name='abc' ng-model='path' value=''/>");
-        };
-        uploader.onCompleteAll = function() {
-            console.info('onCompleteAll');
-        };
-
-        console.info('uploader', uploader);
+		}
 }]);
 
 /****** Forgot Password Page controller *****/
@@ -947,11 +915,9 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 						//Firebase.goOnline();
 						presenceRef.child($scope.name).onDisconnect().remove();
 						presenceRef.child($scope.name).set({id:$scope.userID, name:$scope.name, status:true});
-						userprofileRef.child($scope.name).update({online: true});
 					  } else {
 						//alert("not connected");
-						userprofileRef.child($scope.name).update({online: false});
-						
+						presenceRef.child($scope.name).remove();
 						}
 				});
 					
@@ -1046,3 +1012,46 @@ var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.inf
 				});
 				console.log($scope.log);
 				});*/
+
+phonecatControllers.controller('testCtrl', ['$scope', '$http', '$timeout', '$compile', 'Upload', 
+function ($scope, $http, $timeout, $compile, Upload) {
+   $scope.$watch('files', function () {
+             $scope.upload($scope.files);
+        });
+
+        $scope.upload = function (files) {
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    Upload.upload({
+                        url: 'http://parssv.com/phpTrander/?action=test', 
+                        headers: {'Content-Type': file.type},
+                        method: 'POST',
+                        data: file,
+                        file: file, 
+                    }).progress(function (evt) {
+                        // Math.min is to fix IE which reports 200% sometimes
+						file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                    }).success(function (data, status, headers, config) {
+                        console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                        $scope.image_submit = function() {
+            /*$http.post('http://parssv.com/phpTrander/?action=insert_photo', 
+            {
+            'img_name' : config.file.name, 
+            'img_src' : '../images/' + config.file.name
+            }
+            )
+            .success(function (data, status, headers, config) {
+            $scope.get_image();
+            })
+
+            .error(function(data, status, headers, config){
+
+            });*/
+            };
+            $scope.image_submit();
+                    });
+                }
+            }
+		}
+}]);

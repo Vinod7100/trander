@@ -9,7 +9,8 @@ var phonecatApp = angular.module('phonecatApp', [
   'ui.bootstrap',
   'firebase',
   'angularFileUpload',
-  'ui.bootstrap.contextMenu'
+  'ui.bootstrap.contextMenu',
+  'ngFileUpload'
 ]);
 
 // this factory returns a synchronized array of chat messages
@@ -83,6 +84,10 @@ phonecatApp.config(['$routeProvider',
 	  when('/buyProfile',{
 		templateUrl: 'partials/buyProfile.html',
         controller: 'buyProfilePageCtrl'  
+	  }).
+	  when('/test',{
+		templateUrl: 'partials/test.html',
+        controller: 'testCtrl'  
 	  }).
       otherwise({
         redirectTo: '/login'

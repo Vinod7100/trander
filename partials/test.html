@@ -1,0 +1,40 @@
+
+
+  <div class="upload-buttons">
+    <div id="editArea"> 
+        <fieldset>
+    
+          <div class="up-buttons">
+            <div ngf-select ngf-drop ng-model="files"
+                 class="container drop-box text-center" ngf-multiple="'multiple'" ngf-pattern="'image/*'" accept="'image/*'"
+                 ngf-capture="'mobile'"><i class="fa fa-camera"></i>
+              <span ng-show="dropAvailable">Drop File or Paste Image</span>
+            </div>
+            <br/>
+          </div
+
+          <div class="preview">
+            <div>Preview image/audio/video:</div>
+            <img ngf-src="!files[0].$error && files[0]" width="50px">
+          </div>
+        </fieldset>
+        <br/>
+      </div>
+    </div>
+  </div>
+  
+   <span ng-show="files.result">Upload Successful</span>
+  
+    <li class="sel-file" ng-repeat="f in files">
+      <div ng-hide="f.$error">
+        <img ngf-thumbnail="!f.$error && f" class="thumb">
+				<span class="progress" ng-show="f.progress >= 0">
+					<div style="width:{{f.progress}}%">{{f.progress}}%</div>
+				</span>
+        </div>
+      </div>
+    </li>
+  
+  <div style="clear:both" class="err" ng-show="errorMsg != null">{{errorMsg}}</div>
+</div>
+
