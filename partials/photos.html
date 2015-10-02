@@ -11,7 +11,7 @@
 				<p><strong>Note: </strong>You can upload 2 Private and 3 Public Photos</p>
 					<div class="upload-buttons">
 						<div class="up-buttons">
-							<div ngf-select ngf-drop ng-model="files"
+							<div ngf-select ngf-drop ng-model="files" 
 								 class="container drop-box text-center" ngf-multiple="'multiple'" ngf-pattern="'image/*'" accept="'image/*'"
 								 ngf-capture="'mobile'"><i class="fa fa-camera" style="font-size:40px;"></i>
 							  <span ng-show="dropAvailable">Drop File or Paste Image</span>
@@ -21,6 +21,7 @@
 							<div class="col-xs-8 col-xs-offset-2 center"><img ngf-src="!files[0].$error && files[0]" class="img-rounded img-responsive"> </div>
 						</div>
 					</div>
+					
 					<div class="col-xs-12 progressBar" style="margin-top:5px;">
 						<div class="col-xs-10 sel-file" ng-repeat="f in files">
 							<div ng-hide="f.$error">
@@ -31,6 +32,7 @@
 								  </div>
 								</div>
 							</div>
+							{{f.progress}}%
 						</div>
 						<div class="col-xs-2"><button type="button" ng-click="files = null" ng-show="files" class="btn btn-danger btn-xs">x</button></div>
 					</div>
@@ -53,13 +55,14 @@
 					<form class="form">
 					<div style="width: 100%; height: 150px;background-image: url({{c.image_url}});background-size: cover;background-position: 50% 50%;background-repeat: no-repeat;"></div>
 					<label class="radio-inline">
-					  <input type="radio" ng-modal="c.type" name="status" ng-click="setPrivate(c.id)" ng-value="private"> private
+					  <input type="radio" ng-checked="c.type == 'private'" ng-modal="private" name="private" ng-click="setPrivate(c.id)" ng-value="private"> private
 					</label>
 					<label class="radio-inline">
-					  <input type="radio" ng-model="c.type" name="status" ng-click="setPublic(c.id)" ng-value="public"> public
+					  <input type="radio" ng-checked="c.type == 'public'" ng-model="public" name="public" ng-click="setPublic(c.id)" ng-value="public"> public
 					</label>
 					<label class="radio-inline">
-					  <input type="radio" ng-true-value="'yes'" ng-false-value="'no'" ng-model="profile" name="profile" ng-click="setPictureProfile(c.id)"> profile
+					{{}}
+					  <input type="radio" ng-checked="c.is_profile == 'yes'" ng-model="profile" name="profile" ng-click="setPictureProfile(c.id)"> profile
 					</label>
 					<input type="button" class="btn btn-default submit-btn" ng-click="del(c.id)" value="Delete"/>
 					</form>

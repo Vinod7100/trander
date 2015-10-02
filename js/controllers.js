@@ -74,9 +74,10 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 
 	
 	$scope.logout = function(){
 		$scope.loading = true;
-		console.log($scope.name);
-		//var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence");
-		//presenceRef.child($scope.name).remove();
+		console.log($scope.name.name);
+		var name = $scope.name.name;
+		var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence");
+		presenceRef.child(name).remove();
 		//Firebase.goOffline();
 		
 		
@@ -111,7 +112,6 @@ phonecatControllers.controller('loginPageCtrl', ['$scope', '$http', '$location',
 				var pathurl = "/home";
 				console.log(pathurl);
 				$location.path(pathurl);
-				
 			}
 			if($scope.userData.status == 'registered'){
 				var pathurl = "/verify";
@@ -412,6 +412,7 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
+					console.log(file);
                     Upload.upload({
                         url: 'http://parssv.com/phpTrander/?action=test', 
                         headers: {'Content-Type': file.type},
@@ -421,14 +422,12 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
                     }).progress(function (evt) {
                         // Math.min is to fix IE which reports 200% sometimes
 						file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-						var progressPercentage = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-						console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                     }).success(function (data, status, headers, config) {
                         console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
-						file.result = data;
+						//$scope.errorMsg = response.status + ': ' + response.data;
+						//console.log(response.config.data);
                         $scope.image_submit = function(id) {
 							console.log(id);
-							console.log(config.file.name);
 							var path = 'http://parssv.com/phpTrander/uploads/'+ config.file.name;
 							$scope.loading = true;
 						   $http.get('http://parssv.com/phpTrander/index.php?action=insert_photo&path='+ path +'&user_id='+ id).success(function(data) {
@@ -444,6 +443,10 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
                 }
             }
 		}
+		$scope.getReqParams = function () {
+			return $scope.generateErrorOnServer ? '?errorCode=' + $scope.serverErrorCode +
+			'&errorMessage=' + $scope.serverErrorMsg : '';
+		};
 }]);
 
 /****** Forgot Password Page controller *****/

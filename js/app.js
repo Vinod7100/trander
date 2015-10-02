@@ -22,6 +22,7 @@ phonecatApp.factory("Auth", ["$firebaseAuth",
   }
 ]);
 
+
 phonecatApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.

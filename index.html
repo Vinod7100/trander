@@ -10,8 +10,24 @@
   <!---<link type="text/css" rel="stylesheet" href="css/common.css">--->
   <!---<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">--->
   <!-- Fix for old browsers -->
-  <script src="http://nervgh.github.io/js/es5-shim.min.js"></script>
-  <script src="http://nervgh.github.io/js/es5-sham.min.js"></script>
+  <script>
+    //optional need to be loaded before angular-file-upload-shim(.min).js 
+    FileAPI = {
+        //only one of jsPath or jsUrl. 
+        jsPath: '/js/upload/FileAPI.min.js/folder/', 
+        jsUrl: 'yourcdn.com/js/FileAPI.min.js',
+        
+        //only one of staticPath or flashUrl. 
+        staticPath: '/flash/FileAPI.flash.swf/folder/',
+        flashUrl: 'yourcdn.com/js/FileAPI.flash.swf',
+ 
+        //forceLoad: true, html5: false //to debug flash in HTML5 browsers 
+    }
+</script> 
+<script src="js/upload/ng-file-upload-shim.min.js"></script>
+  <script src="js/upload/ng-file-upload-shim.js"></script>
+  <!---<script src="http://nervgh.github.io/js/es5-shim.min.js"></script>
+  <script src="http://nervgh.github.io/js/es5-sham.min.js"></script>--->
   <!--<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>-->
   <script src="js/console-sham.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -20,14 +36,13 @@
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-sanitize.js"></script>
-  <script src="js/angular-animate.min.js"></script>
-  <script src="js/TweenMax.min.js"></script>
+  <!---<script src="js/angular-animate.min.js"></script>
+  <script src="js/TweenMax.min.js"></script>--->
   <script src="js/contextMenu.js"></script>
 
   <script src="js/app.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/angular-file-upload.js"></script>
-  <script src="js/upload/ng-file-upload-shim.js"></script>
   <script src="js/upload/ng-file-upload.js"></script>
   <script src="js/upload/upload.js"></script>
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.8.0/codemirror.min.css">
@@ -60,18 +75,5 @@
     document.write('<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/' +
         (angularVersion || '1.2.24') + '/angular.js"><\/script>');
  </script>
- <script type="text/javascript">
-    FileAPI = {
-      debug: true,
-      //forceLoad: true, html5: false //to debug flash in HTML5 browsers
-      //wrapInsideDiv: true, //experimental for fixing css issues
-      //only one of jsPath or jsUrl.
-      //jsPath: '/js/FileAPI.min.js/folder/',
-      //jsUrl: 'yourcdn.com/js/FileAPI.min.js',
-
-      //only one of staticPath or flashUrl.
-      //staticPath: '/flash/FileAPI.flash.swf/folder/'
-      //flashUrl: 'yourcdn.com/js/FileAPI.flash.swf'
-    };
-  </script>
+ 
 </html>
