@@ -9,14 +9,11 @@
 		</div>
 		<div class="clearfix" style="height:30px; display:block; clear:both; width:100%"></div>
 		<div class="col-xs-12">
-			<div class="col-xs-6 col-xs-offset-3 ng-scope" ng-if="profilePic.profile !=''">
+			<div class="col-sm-6 col-sm-offset-3 ng-scope">
 				<img ng-src="{{profilePic.profile}}" width="100%">
-				<img class="green-dot" ng-src="img/icon_green_dot.png" height="15" width="15">
+				<span ng-repeat="d in conn" ng-if="d.name == name.name"><img class="green-dot" ng-src="img/icon_green_dot.png" height="15" width="15"></span>
 			</div>
-			<div class="col-xs-6 col-xs-offset-3 ng-scope" ng-if="profilePic.profile ==''">
-				<img ng-src="../img/dummy.png" width="100%">
-				<img class="green-dot" ng-src="img/icon_green_dot.png" height="15" width="15">
-			</div>
+			
 			<div class="clearfix"></div>
 			<div class="profile_name center" style="color:white; font-size:20px;">
 				{{name.name}}
@@ -43,7 +40,7 @@
 	</div>
 	<div class="col-xs-6 box" style="background-color:rgb(161, 27, 27);" ng-click="showPage('/favourite')">
 		<i class="fa fa-heart"></i>
-		<div>Favourite</div>
+		<div>Favorites</div>
 	</div>
 	<div class="col-xs-6 box" style="background-color:rgb(111, 18, 18);" ng-click="showPage('/tranding')">
 		<i class="fa fa-thumbs-up"></i>

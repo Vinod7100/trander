@@ -20,13 +20,35 @@ phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams',
   }]);
 
 /****** Home Page controller *****/  
-phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 'Auth',
-  function($scope, $http, $location, Auth) {
+phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 'Auth', '$firebaseArray',
+  function($scope, $http, $location, Auth, $firebaseArray) {
 	  
 	$scope.showPage = function(pathurl){
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
+	
+	//set connection on firebase
+	var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
+	var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence");
+	var lastOnlineRef = new Firebase("https://scorching-heat-3768.firebaseio.com/lastonline/"+ $scope.name);
+	connectedRef.on("value", function(snap) {
+		if (snap.val()) {
+			//alert("connected");
+			lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+			//Firebase.goOnline();
+			presenceRef.child($scope.name).onDisconnect().remove();
+			presenceRef.child($scope.name).set({id:$scope.userID, name:$scope.name, status:true});
+		} else {
+			//alert("not connected");
+			presenceRef.child($scope.name).remove();
+		}
+	}); 
+				
+	var ref = new Firebase('https://scorching-heat-3768.firebaseio.com/presence');
+	var obj = $firebaseArray(ref);
+	// To make the data available in the DOM, assign it to $scope
+	$scope.conn = obj;
 	
 	if (1 == 1) {
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
@@ -414,27 +436,29 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
                     var file = files[i];
 					console.log(file);
                     Upload.upload({
-                        url: 'http://parssv.com/phpTrander/?action=test', 
+                        url: 'http://parssv.com/phpTrander/?action=upload_photos', 
                         headers: {'Content-Type': file.type},
                         method: 'POST',
-                        data: file,
-                        file: file, 
+                        data: {file:file, user_id:$scope.userID},
+                        file: file 
                     }).progress(function (evt) {
                         // Math.min is to fix IE which reports 200% sometimes
 						file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function (data, status, headers, config) {
                         console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 						//$scope.errorMsg = response.status + ': ' + response.data;
-						//console.log(response.config.data);
+						console.log(data.path);
                         $scope.image_submit = function(id) {
 							console.log(id);
-							var path = 'http://parssv.com/phpTrander/uploads/'+ config.file.name;
+							var path = data.path;
+							console.log(path);
 							$scope.loading = true;
 						   $http.get('http://parssv.com/phpTrander/index.php?action=insert_photo&path='+ path +'&user_id='+ id).success(function(data) {
-							$scope.itemDetails = data;
-							console.log($scope.itemDetails);
+							$scope.imgDetails = data;
+							console.log($scope.imgDetails);
 							$scope.loading = false;
-							window.location.reload();
+							setTimeout(function(){ window.location.reload(); }, 2000);
+							//window.location.reload();
 							
 							});
 						};
@@ -469,8 +493,8 @@ phonecatControllers.controller('recoverPageCtrl', ['$scope', '$http', '$location
 }]);
 
 /****** Browse Page controller *****/
-phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location',
-  function($scope, $http, $location) {
+phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location', '$firebaseArray',
+  function($scope, $http, $location, $firebaseArray) {
 	  
 	$scope.showPage = function(pathurl){
 		console.log(pathurl);
@@ -500,7 +524,11 @@ phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location'
 			}
 		});
 	}
-	
+	var ref = new Firebase('https://scorching-heat-3768.firebaseio.com/presence');
+	var obj = $firebaseArray(ref);
+	// To make the data available in the DOM, assign it to $scope
+	$scope.conn = obj;
+				
 	$scope.submit = function(){
 		$scope.loading = true;
 		console.log($scope.looking);
