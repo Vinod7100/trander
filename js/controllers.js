@@ -977,8 +977,14 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 	};
 	
 	$scope.menuOptions = [
-          ['Block User', function (uid) {
-           alert(uid);
+          ['Block User', function ($itemScope) {
+			$scope.selected = $itemScope.user.id;
+			console.log('block:'+$scope.selected);
+			alert('Blocked');
+          }],
+		  ['Add to Favorites', function ($itemScope) {
+			$scope.selected = $itemScope.user.id;
+			console.log($scope.selected);
           }],
           null,
           ['Add to Favourates', function () {

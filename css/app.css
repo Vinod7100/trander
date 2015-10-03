@@ -82,7 +82,7 @@ button.transparent{
 .profile .form-control[disabled], .profile input[type="text"], .profile input[type="email"], .profile input[type="number"], .profile input[type="password"], .profile select.form-control{
 	background-color:rgba(112, 108, 106, 0.99);
 	color:white;
-	padding-left:67px ;
+	padding-left:75px ;
 	height:45px !important;
 	font-size: 18px !important;
 	border:0px;
