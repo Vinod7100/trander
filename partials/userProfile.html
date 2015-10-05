@@ -5,6 +5,7 @@
 		<h3 style="margin:0px; text-align:center"></h3>
 		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
+	
 	<div class="col-xs-12">
 		<div class="col-sm-6 col-sm-offset-3 ng-scope">
 			<img ng-src="{{info.user_image}}" width="100%">
@@ -48,9 +49,22 @@
 		<div class="col-xs-6 p-box" style="height:40px;">Looking For</div>
 		<div class="col-xs-6 p-box" style="height:40px;">{{info.looking_for}} </div>
 	</div>
-	<div class="col-xs-12" style="padding-bottom:10px;">
+	<div class="col-xs-12" style="padding-bottom:10px;" ng-if="info.status == 'accepted'">
+		<div class="col-xs-12 alert alert-success">You are friend with {{info.name}}</div>
+	</div>
+	<div class="col-xs-12" style="padding-bottom:10px;" ng-if="userID == info.req_from && info.status == 'requested'">
+		<div class="col-xs-12 alert alert-success">Your Request has been sent Succsessfully! Please wait for confirmation</div>
+	</div>
+	<div class="col-xs-12" style="padding-bottom:10px;" ng-if="userID == info.req_to && info.status == 'requested'">
+		<div class="col-xs-6">
+			<button type="submit"  class="form-control btn btn-success" ng-click="accept(info.id)">Accept</button>
+		</div>
+		<div class="col-xs-6">
+			<button type="submit"  class="form-control btn btn-danger" ng-click="decline(info.id)">Decline</button>
+		</div>
+	</div>
+	<div class="col-xs-12" style="padding-bottom:10px;" ng-if="!info.status">
 		<button type="submit" ng-click="invite(info.id)" class="form-control btn btn-primary">Invite User</button>
-		
 	</div>
 	<div class="clearfix"></div>
 </div>

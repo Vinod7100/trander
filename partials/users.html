@@ -5,10 +5,22 @@
 		<h3 style="margin:0px; text-align:center"></h3>
 		<a href="" ng-click="showPage('/home')" class="btn-pull-right"><i class="fa fa-home"></i></a>
 	</div>
+	<div class="col-xs-12">
+		<div ng-if="message.error == 'true'" class="alert alert-danger">
+			{{message.message}}
+		</div>
+		<div ng-if="message.success == 'true'" class="alert alert-success">
+			{{message.message}}
+		</div>
+	</div>	
 	<div class="col-xs-12 msg">
-		<div class="col-xs-12 p-box" ng-repeat="user in users"  context-menu="menuOptions" ng-click="showChat(user.name)">
-			<img ng-src="{{user.user_image}}" width="40" height="40" class="img-rounded">
-			<span class="pull-right">{{user.name}}</span>
+		<div class="col-xs-12 p-box" ng-repeat="user in users"  context-menu="menuOptions" >
+			<span ng-click="showChat(user.name)" style="cursor:pointer;">
+				<img ng-src="{{user.user_image}}" width="40" height="40" class="img-rounded">
+				<span>{{user.name}}</span>
+			</span>
+			<span class="pull-right" ng-init="exist(user.id)"><i class="fa fa-star" data-toggle="tooltip" data-placement="left" title="Add to Favorites" ng-click="add_fav(user.id)" style="cursor:pointer; font-size:20px; padding:5px"></i></span>
+			<span class="pull-right"> <i class="fa fa-ban" style="cursor:pointer; color:red; font-size:20px; padding:5px;"data-toggle="tooltip" data-placement="left" title="Block"></i> </span>
 			<div ng-repeat="d in data" ng-if="d.name == user.name">
 			<div ><span ng-if="d.status" class="pull-left" style="position: absolute; top: 31px; left: 34px;"><img ng-src="img/icon_green_dot.png" width="15" height="15"></span></div>
 			</div>

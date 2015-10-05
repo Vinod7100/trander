@@ -4,6 +4,7 @@
 
 var phonecatControllers = angular.module('phonecatControllers', []);
 var url = "http://parssv.com/phpTrander/";
+var firebaseUrl = "https://scorching-heat-3768.firebaseio.com/";
 
 phonecatControllers.controller('PhoneListCtrl', ['$scope', '$http',
   function($scope, $http) {
@@ -65,14 +66,14 @@ phonecatControllers.controller('homePageCtrl', ['$scope', '$http', '$location', 
 				
 				console.log($scope.userID);
 				$scope.loading = true;
-					$http.get('http://parssv.com/phpTrander/?action=show_profile_pic&user_id='+ $scope.userID).success(function(data) {
+					$http.get(url +'?action=show_profile_pic&user_id='+ $scope.userID).success(function(data) {
 						$scope.profilePic = data;
 						$scope.image = $scope.profilePic.profile;
 						console.log($scope.profilePic);
 						$scope.loading = false;
 					});
 					
-					$http.get('http://parssv.com/phpTrander/?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
+					$http.get(url +'?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
 						$scope.name = data;
 						$scope.loading = false;
 					});
@@ -126,7 +127,7 @@ phonecatControllers.controller('loginPageCtrl', ['$scope', '$http', '$location',
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			console.log($scope.userData);
 			$scope.loading = false;
@@ -162,7 +163,7 @@ phonecatControllers.controller('loginPageCtrl', ['$scope', '$http', '$location',
 			  }
 			});
 			$scope.loading = true;
-			$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.email +'&password='+ $scope.password).success(function(data) {
+			$http.get(url +'?action=login&email='+ $scope.email +'&password='+ $scope.password).success(function(data) {
 			$scope.userDetails = data;
 			$scope.loading = false;
 			console.log($scope.userDetails);
@@ -230,7 +231,7 @@ phonecatControllers.controller('registrationPageCtrl', ['$scope', '$http', '$loc
       });
    
 		
-		$http.get('http://parssv.com/phpTrander/?action=register&name='+ $scope.name +'&age='+ $scope.age +'&email='+ $scope.email +'&password='+ $scope.password +'&gender='+ $scope.gender +'&order_id='+ $scope.obj.orderid +'&old_user='+ $scope.old_user).success(function(data) {
+		$http.get(url +'?action=register&name='+ $scope.name +'&age='+ $scope.age +'&email='+ $scope.email +'&password='+ $scope.password +'&gender='+ $scope.gender +'&order_id='+ $scope.obj.orderid +'&old_user='+ $scope.old_user).success(function(data) {
 			$scope.userDetails = data;
 			$scope.loading = false;
 			console.log($scope.userDetails);
@@ -260,7 +261,7 @@ phonecatControllers.controller('verifyPageCtrl', ['$scope', '$http', '$location'
 	
 	$scope.submit = function(){
 			$scope.loading = true;
-			$http.get('http://parssv.com/phpTrander/?action=verify&token='+ $scope.token).success(function(data) {
+			$http.get(url +'?action=verify&token='+ $scope.token).success(function(data) {
 			$scope.userDetails = data;
 			$scope.loading = false;
 			console.log($scope.userDetails);
@@ -288,12 +289,12 @@ phonecatControllers.controller('profilePageCtrl', ['$scope', '$http', '$location
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
 				$scope.userID = $scope.userData.id;
-				$http.get('http://parssv.com/phpTrander/?action=show_profile&user_id='+ $scope.userID).success(function(data) {
+				$http.get(url +'?action=show_profile&user_id='+ $scope.userID).success(function(data) {
 						$scope.profileData = data;
 						$scope.loading = false;
 						$scope.height = $scope.profileData.height;
@@ -305,7 +306,7 @@ phonecatControllers.controller('profilePageCtrl', ['$scope', '$http', '$location
 						$scope.age = $scope.profileData.age;
 						$scope.gps = $scope.profileData.gps;
 					});
-				$http.get('http://parssv.com/phpTrander/?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
+				$http.get(url +'?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
 					$scope.data = data;
 					$scope.name = $scope.data.name;
 					$scope.gender = $scope.data.gender;
@@ -330,7 +331,7 @@ phonecatControllers.controller('profilePageCtrl', ['$scope', '$http', '$location
 			console.log($scope.height);
 			console.log($scope.weight);
 			console.log($scope.gps);
-			$http.get('http://parssv.com/phpTrander/?action=add_user_profile&gender='+ $scope.gender +'&user_id='+ $scope.userID +'&name='+ $scope.name +'&height='+ $scope.height +'&weight='+ $scope.weight +'&age='+ $scope.age +'&body_type='+ $scope.btype +'&about='+ $scope.about +'&looking='+ $scope.looking +'&gps='+ $scope.gps +'&ethnicity='+ $scope.ethnicity).success(function(data) {
+			$http.get(url +'?action=add_user_profile&gender='+ $scope.gender +'&user_id='+ $scope.userID +'&name='+ $scope.name +'&height='+ $scope.height +'&weight='+ $scope.weight +'&age='+ $scope.age +'&body_type='+ $scope.btype +'&about='+ $scope.about +'&looking='+ $scope.looking +'&gps='+ $scope.gps +'&ethnicity='+ $scope.ethnicity).success(function(data) {
 			$scope.userDetails = data;
 			$scope.loading = false;
 			console.log($scope.userDetails);
@@ -351,13 +352,13 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
 				$scope.userID = $scope.userData.id;
 				$scope.name = $scope.userData.name;
-				$http.get('http://parssv.com/phpTrander/?action=show_images&user_id='+ $scope.userID).success(function(data) {
+				$http.get(url +'?action=show_images&user_id='+ $scope.userID).success(function(data) {
 				$scope.content = data;
 				console.log($scope.content);
 					if($scope.content.success == "true"){
@@ -385,7 +386,7 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
 		console.log(id);
 		$scope.photo_id = id;
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=make_private&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
+		$http.get(url +'?action=make_private&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
 			$scope.imgDetails = data;
 			console.log($scope.userDetails);
 			$scope.loading = false;
@@ -396,7 +397,7 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
 		console.log(id);
 		$scope.photo_id = id;
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=make_public&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
+		$http.get(url +'?action=make_public&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
 			$scope.imgDetails = data;
 			$scope.loading = false;
 			
@@ -407,7 +408,7 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
 		console.log(id);
 		$scope.photo_id = id;
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=set_profile&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
+		$http.get(url +'?action=set_profile&photo_id='+ $scope.photo_id +'&user_id='+$scope.userID).success(function(data) {
 			$scope.imgDetails = data;
 			$scope.loading = false;
 		});
@@ -418,7 +419,7 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
 		console.log($scope.photo_id);
 		if(confirm("Do You Really Want to Delete!")){
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=delete_picture&photo_id='+ $scope.photo_id).success(function(data) {
+		$http.get(url +'?action=delete_picture&photo_id='+ $scope.photo_id).success(function(data) {
 			$scope.userDetails = data;
 			$scope.loading = false;
 			window.location.reload();
@@ -436,7 +437,7 @@ function ($scope, $http, $location, $timeout, $compile, Upload) {
                     var file = files[i];
 					console.log(file);
                     Upload.upload({
-                        url: 'http://parssv.com/phpTrander/?action=upload_photos', 
+                        url: url +'?action=upload_photos', 
                         headers: {'Content-Type': file.type},
                         method: 'POST',
                         data: {file:file, user_id:$scope.userID},
@@ -484,7 +485,7 @@ phonecatControllers.controller('recoverPageCtrl', ['$scope', '$http', '$location
 	
 	$scope.submit = function(){
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=recover&email='+ $scope.email).success(function(data) {
+		$http.get(url +'?action=recover&email='+ $scope.email).success(function(data) {
 		$scope.userDetails = data;
 		$scope.loading = false;
 		});
@@ -505,13 +506,13 @@ phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location'
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
 				$scope.userID = $scope.userData.id;
 				$scope.loading = true;
-				$http.get('http://parssv.com/phpTrander/?action=show_all_users&user_id='+ $scope.userID).success(function(data) {
+				$http.get(url +'?action=show_all_users&user_id='+ $scope.userID).success(function(data) {
 					$scope.userData = data;
 					$scope.loading = false;
 				});
@@ -537,7 +538,7 @@ phonecatControllers.controller('browsePageCtrl', ['$scope', '$http', '$location'
 		console.log($scope.weight);
 		console.log($scope.ethnicity);
 		console.log($scope.age);
-		$http.get('http://parssv.com/phpTrander/?action=browse_user&age='+ $scope.age +'&weight='+ $scope.weight +'&height='+ $scope.height +'&ethnicity='+ $scope.ethnicity +'&btype='+ $scope.btype +'&looking_for='+ $scope.looking).success(function(data) {
+		$http.get(url +'?action=browse_user&age='+ $scope.age +'&weight='+ $scope.weight +'&height='+ $scope.height +'&ethnicity='+ $scope.ethnicity +'&btype='+ $scope.btype +'&looking_for='+ $scope.looking).success(function(data) {
 		$('.members').hide();
 		$('.filter_result').show();
 		$scope.userFilterData = data;
@@ -583,16 +584,32 @@ phonecatControllers.controller('userProfilePageCtrl', ['$scope', '$http', '$loca
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
-	
+	$scope.id = $routeParams.user_id;
 	if (1 == 1) {
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
 				$scope.userID = $scope.userData.id;
+				console.log($scope.userID);
+				$scope.loading = true;
+					$http.get(url +'?action=get_user_profile_details&user_id='+ $scope.id +'&c_id='+ $scope.userID).success(function(data) {
+						$scope.info = data;
+						$scope.loading = false;
+						console.log($scope.info);
+						if($scope.userID == $scope.info.req_to)
+						{
+							console.log('You are already invited');
+						}
+						if($scope.userID == $scope.info.req_from)
+						{
+							console.log('You invites this');
+						}
+					});
+		
 			}
 			else{
 				var pathurl = "/login";
@@ -603,19 +620,28 @@ phonecatControllers.controller('userProfilePageCtrl', ['$scope', '$http', '$loca
 		});
 	}
 	
-	$scope.id = $routeParams.user_id;
-	console.log($scope.id);
 	
-	$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=get_user_profile_details&user_id='+ $scope.id).success(function(data) {
-			$scope.info = data;
-			$scope.loading = false;
-		});
-		
 	$scope.invite = function(){
-		$http.get('http://parssv.com/phpTrander/?action=invite_user&request_to='+ $scope.id +'&request_from='+ $scope.userID).success(function(data) {
+		$http.get(url +'?action=invite_user&request_to='+ $scope.id +'&request_from='+ $scope.userID).success(function(data) {
 			$scope.message = data;
 			$scope.loading = false;
+			setTimeout(function(){ window.location.reload(); }, 1000);
+		});
+	}
+	$scope.accept = function(id){
+		console.log(id);
+		$http.get(url +'?action=accept&request_from='+ $scope.id +'&request_to='+ $scope.userID).success(function(data) {
+			$scope.message = data;
+			$scope.loading = false;
+			setTimeout(function(){ window.location.reload(); }, 1000);
+		});
+	}
+	$scope.decline = function(id){
+		console.log(id);
+		$http.get(url +'?action=decline&request_from='+ $scope.id +'&request_to='+ $scope.userID).success(function(data) {
+			$scope.message = data;
+			$scope.loading = false;
+			setTimeout(function(){ window.location.reload(); }, 1000);
 		});
 	}
 }]);
@@ -634,7 +660,7 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
@@ -655,7 +681,7 @@ phonecatControllers.controller('newMessagePageCtrl', ['$scope', '$http', '$locat
 					//console.log("Authenticated successfully with payload:", authData);
 				  }
 				});
-				$http.get('http://parssv.com/phpTrander/?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
+				$http.get(url +'?action=get_user_name&user_id='+ $scope.userID).success(function(data) {
 					$scope.name = data;
 					$scope.name = $scope.name.name;
 					console.log($scope.name);
@@ -797,6 +823,45 @@ phonecatControllers.controller('favouritePageCtrl', ['$scope', '$http', '$locati
 		console.log(pathurl);
 		$location.path(pathurl)
 	}
+	
+	if (1 == 1) {
+		$scope.tranderEmail = localStorage.getItem("tranderEmail");
+		$scope.tranderPassword = localStorage.getItem("tranderPassword");
+		$scope.loading = true;
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+			$scope.userData = data;
+			$scope.loading = false;
+			if($scope.userData.status == 'verified'){
+				$scope.userID = $scope.userData.id;
+				console.log($scope.userID);
+				$scope.loading = true;
+					$http.get(url +'?action=fav_list&user_id=' + $scope.userID).success(function(data) {
+						$scope.info = data;
+						$scope.loading = false;
+						console.log($scope.info);
+					});
+		
+			}
+			else{
+				var pathurl = "/login";
+				console.log(pathurl);
+				$scope.loading = false;
+				$location.path(pathurl);
+			}
+		});
+	}
+	
+	$scope.remove = function(id){
+		$scope.id = id;
+		console.log(id);
+		$scope.loading = true;
+		$http.get(url +'?action=remove_fav&added='+ $scope.id +'&added_by='+ $scope.userID).success(function(data) {
+			$scope.message = data;
+			$scope.loading = false;
+			console.log($scope.message);
+			window.location.reload();
+		});
+	}
 }]);
 
 /****** Trander Parties Page controller *****/
@@ -812,7 +877,7 @@ phonecatControllers.controller('trandingPageCtrl', ['$scope', '$http', '$locatio
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
@@ -923,7 +988,7 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 		$scope.tranderEmail = localStorage.getItem("tranderEmail");
 		$scope.tranderPassword = localStorage.getItem("tranderPassword");
 		$scope.loading = true;
-		$http.get('http://parssv.com/phpTrander/?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
+		$http.get(url +'?action=login&email='+ $scope.tranderEmail +'&password='+ $scope.tranderPassword).success(function(data) {
 			$scope.userData = data;
 			$scope.loading = false;
 			if($scope.userData.status == 'verified'){
@@ -931,10 +996,10 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 				$scope.email = $scope.userData.email;
 				$scope.name = $scope.userData.name;
 				$scope.password = $scope.userData.password;
-				console.log($scope.email);
-				$http.get('http://parssv.com/phpTrander/?action=get_user_friend_list&user_id='+ $scope.userID).success(function(data) {
+				//console.log($scope.email);
+				$http.get(url +'?action=get_user_friend_list&user_id='+ $scope.userID).success(function(data) {
 					$scope.users = data;
-					console.log($scope.users);
+					//console.log($scope.users);
 				});
 				var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
 				var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence");
@@ -976,29 +1041,59 @@ phonecatControllers.controller('usersPageCtrl', ['$scope', '$http', '$location',
 		$location.path(pathurl).search('friend_name', name);
 	};
 	
+	$scope.add_fav = function(id){
+		$scope.selected = id;
+			console.log($scope.selected);
+			console.log($scope.userID);
+			$scope.loading = true;
+			$http.get(url +'?action=add_to_fav&selected='+ $scope.selected +'&selected_by='+ $scope.userID).success(function(data) {
+				$scope.message = data;
+				$scope.loading = false;
+			});
+	}
+	$scope.exist = function(id){
+		$scope.added = id;
+		$http.get(url +'?action=fav_exist&id='+ $scope.userID +'&added='+ $scope.added).success(function(data) {
+			$scope.message = data;
+			console.log($scope.message);
+		});
+	}
 	$scope.menuOptions = [
           ['Block User', function ($itemScope) {
 			$scope.selected = $itemScope.user.id;
 			console.log('block:'+$scope.selected);
-			alert('Blocked');
+			
           }],
 		  ['Add to Favorites', function ($itemScope) {
 			$scope.selected = $itemScope.user.id;
 			console.log($scope.selected);
+			console.log($scope.userID);
+			$scope.loading = true;
+			$http.get(url +'?action=add_to_fav&selected='+ $scope.selected +'&selected_by='+ $scope.userID).success(function(data) {
+				$scope.message = data;
+				$scope.loading = false;
+			});
+	
           }],
           null,
-          ['Add to Favourates', function () {
-             
-          }, function () {
-             
-          }]
+         
       ];
 	
 }]);
 
-/****** Show user's friend Page controller *****/
+/****** Add Filter Page controller *****/
 phonecatControllers.controller('addFilterPageCtrl', ['$scope', '$http', '$location',
   function($scope, $http, $location) {
+	  
+	$scope.showPage = function(pathurl){
+		console.log(pathurl);
+		$location.path(pathurl)
+	}
+}]);
+
+/****** Block User Page controller *****/
+phonecatControllers.controller('blockUserPageCtrl', ['$scope', '$http', '$location', '$firebaseArray',
+  function($scope, $http, $location, $firebaseArray) {
 	  
 	$scope.showPage = function(pathurl){
 		console.log(pathurl);
@@ -1019,76 +1114,4 @@ phonecatControllers.controller('buyProfilePageCtrl', ['$scope', '$http', '$locat
 	$scope.url = "http://parssv.com/phpTrander/buyprofile.php?registered_id="+ $scope.reid;
 	changeFrame($scope.url);
 	
-}]);
-
-
-/*
-var connectedRef = new Firebase("https://scorching-heat-3768.firebaseio.com/.info/connected");
-					var presenceRef = new Firebase("https://scorching-heat-3768.firebaseio.com/presence");
-					var lastOnlineRef = new Firebase("https://scorching-heat-3768.firebaseio.com/lastonline/"+ $scope.name);
-					connectedRef.on("value", function(snap) {
-					   if (snap.val()) {
-						//alert("connected");
-						lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
-						//Firebase.goOnline();
-						presenceRef.onDisconnect().remove();
-						presenceRef.push({name:$scope.name, status:true});
-					  } else {
-						
-						//alert("not connected");
-						presenceRef.set(false);
-						
-					  }
-					});
-					
-				presenceRef.on('child_added', function (snapshot) {
-				//GET DATA
-				var data = snapshot.val();
-				snapshot.forEach(function(vote) {
-					$scope.log.push({name: data.name, value:data.status});
-				});
-				console.log($scope.log);
-				});*/
-
-phonecatControllers.controller('testCtrl', ['$scope', '$http', '$timeout', '$compile', 'Upload', 
-function ($scope, $http, $timeout, $compile, Upload) {
-   $scope.$watch('files', function () {
-             $scope.upload($scope.files);
-        });
-
-        $scope.upload = function (files) {
-            if (files && files.length) {
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    Upload.upload({
-                        url: 'http://parssv.com/phpTrander/?action=test', 
-                        headers: {'Content-Type': file.type},
-                        method: 'POST',
-                        data: file,
-                        file: file, 
-                    }).progress(function (evt) {
-                        // Math.min is to fix IE which reports 200% sometimes
-						file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                    }).success(function (data, status, headers, config) {
-                        console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
-                        $scope.image_submit = function() {
-            /*$http.post('http://parssv.com/phpTrander/?action=insert_photo', 
-            {
-            'img_name' : config.file.name, 
-            'img_src' : '../images/' + config.file.name
-            }
-            )
-            .success(function (data, status, headers, config) {
-            $scope.get_image();
-            })
-
-            .error(function(data, status, headers, config){
-
-            });*/
-            };
-            $scope.image_submit();
-                    });
-                }
-            }
-		}
 }]);

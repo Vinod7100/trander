@@ -86,9 +86,9 @@ phonecatApp.config(['$routeProvider',
 		templateUrl: 'partials/buyProfile.html',
         controller: 'buyProfilePageCtrl'  
 	  }).
-	  when('/test',{
-		templateUrl: 'partials/test.html',
-        controller: 'testCtrl'  
+	  when('/block',{
+		templateUrl: 'partials/block.html',
+        controller: 'blockUserPageCtrl'  
 	  }).
       otherwise({
         redirectTo: '/login'
